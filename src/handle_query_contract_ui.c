@@ -1,21 +1,12 @@
-#include "one_inch_plugin.h"
+#include "lifi_plugin.h"
 
 // Set UI for the "Send" screen.
-static void set_send_ui(ethQueryContractUI_t *msg, one_inch_parameters_t *context) {
+static void set_send_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
     switch (context->selectorIndex) {
-        case SWAP:
-        case UNOSWAP:
-        case UNISWAP_V3_SWAP:
-        case UNISWAP_V3_SWAP_TO:
-        case UNISWAP_V3_SWAP_TO_WITH_PERMIT:
-        case UNOSWAP_WITH_PERMIT:
-        case CLIPPER_SWAP:
-        case CLIPPER_SWAP_TO_WITH_PERMIT:
+        case SWAP_TOKENS_GENERIC:
             strlcpy(msg->title, "Send", msg->titleLength);
             break;
-        case FILL_ORDER_RFQ:
-        case FILL_ORDER_RFQ_TO_WITH_PERMIT:
-            strlcpy(msg->title, "Making", msg->titleLength);
+        case START_BRIDGE_TOKENS_VIA_NXTP:
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -39,21 +30,11 @@ static void set_send_ui(ethQueryContractUI_t *msg, one_inch_parameters_t *contex
 }
 
 // Set UI for "Receive" screen.
-static void set_receive_ui(ethQueryContractUI_t *msg, one_inch_parameters_t *context) {
+static void set_receive_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
     switch (context->selectorIndex) {
-        case SWAP:
-        case UNOSWAP:
-        case UNISWAP_V3_SWAP:
-        case UNISWAP_V3_SWAP_TO:
-        case UNISWAP_V3_SWAP_TO_WITH_PERMIT:
-        case UNOSWAP_WITH_PERMIT:
-        case CLIPPER_SWAP:
-        case CLIPPER_SWAP_TO_WITH_PERMIT:
-            strlcpy(msg->title, "Receive Min", msg->titleLength);
-            break;
-        case FILL_ORDER_RFQ:
-        case FILL_ORDER_RFQ_TO_WITH_PERMIT:
-            strlcpy(msg->title, "Taking", msg->titleLength);
+        case SWAP_TOKENS_GENERIC:
+        case START_BRIDGE_TOKENS_VIA_NXTP:
+            strlcpy(msg->title, "Receive", msg->titleLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -76,36 +57,23 @@ static void set_receive_ui(ethQueryContractUI_t *msg, one_inch_parameters_t *con
     PRINTF("AMOUNT RECEIVED: %s\n", msg->msg);
 }
 
-// Set UI for "Beneficiary" screen.
-static void set_beneficiary_ui(ethQueryContractUI_t *msg, one_inch_parameters_t *context) {
-    strlcpy(msg->title, "Beneficiary", msg->titleLength);
-
-    msg->msg[0] = '0';
-    msg->msg[1] = 'x';
-
-    getEthAddressStringFromBinary((uint8_t *) context->beneficiary,
-                                  msg->msg + 2,
-                                  msg->pluginSharedRW->sha3,
-                                  0);
-}
-
 // Set UI for "Partial fill" screen.
 static void set_partial_fill_ui(ethQueryContractUI_t *msg,
-                                one_inch_parameters_t *context __attribute__((unused))) {
+                                lifi_parameters_t *context __attribute__((unused))) {
     strlcpy(msg->title, "Partial fill", msg->titleLength);
     strlcpy(msg->msg, "Enabled", msg->msgLength);
 }
 
 // Set UI for "Warning" screen.
 static void set_warning_ui(ethQueryContractUI_t *msg,
-                           const one_inch_parameters_t *context __attribute__((unused))) {
+                           const lifi_parameters_t *context __attribute__((unused))) {
     strlcpy(msg->title, "WARNING", msg->titleLength);
     strlcpy(msg->msg, "Unknown token", msg->msgLength);
 }
 
 // Helper function that returns the enum corresponding to the screen that should be displayed.
 static screens_t get_screen(ethQueryContractUI_t *msg,
-                            one_inch_parameters_t *context __attribute__((unused))) {
+                            lifi_parameters_t *context __attribute__((unused))) {
     uint8_t index = msg->screenIndex;
 
     bool token_sent_found = context->tokens_found & TOKEN_SENT_FOUND;
@@ -113,6 +81,12 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
 
     bool both_tokens_found = token_received_found && token_sent_found;
     bool both_tokens_not_found = !token_received_found && !token_sent_found;
+
+    PRINTF("token_sent_found: %d\n", token_sent_found);
+    PRINTF("token_received_found: %d\n", token_received_found);
+    PRINTF("both_tokens_found: %d\n", both_tokens_found);
+    PRINTF("both_tokens_not_found: %d\n", both_tokens_not_found);
+
 
     switch (index) {
         case 0:
@@ -173,21 +147,17 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
 
 void handle_query_contract_ui(void *parameters) {
     ethQueryContractUI_t *msg = (ethQueryContractUI_t *) parameters;
-    one_inch_parameters_t *context = (one_inch_parameters_t *) msg->pluginContext;
+    lifi_parameters_t *context = (lifi_parameters_t *) msg->pluginContext;
     memset(msg->title, 0, msg->titleLength);
     memset(msg->msg, 0, msg->msgLength);
     msg->result = ETH_PLUGIN_RESULT_OK;
 
     screens_t screen = get_screen(msg, context);
     switch (screen) {
-        case SEND_SCREEN:
-            set_send_ui(msg, context);
+        case SEND_SCREEN:set_send_ui(msg, context);
             break;
         case RECEIVE_SCREEN:
             set_receive_ui(msg, context);
-            break;
-        case BENEFICIARY_SCREEN:
-            set_beneficiary_ui(msg, context);
             break;
         case PARTIAL_FILL_SCREEN:
             set_partial_fill_ui(msg, context);

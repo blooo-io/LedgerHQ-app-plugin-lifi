@@ -24,9 +24,9 @@
 
 #include "glyphs.h"
 
-#include "one_inch_plugin.h"
+#include "lifi_plugin.h"
 
-void one_inch_plugin_call(int message, void *parameters) {
+void lifi_plugin_call(int message, void *parameters) {
     PRINTF("Handling message %d\n", message);
     switch (message) {
         case ETH_PLUGIN_INIT_CONTRACT:
@@ -81,7 +81,7 @@ __attribute__((section(".boot"))) int main(int arg0) {
                 unsigned int *args = (unsigned int *) arg0;
 
                 if (args[0] != ETH_PLUGIN_CHECK_PRESENCE) {
-                    one_inch_plugin_call(args[0], (void *) args[1]);
+                    lifi_plugin_call(args[0], (void *) args[1]);
                 }
                 os_lib_end();
             }

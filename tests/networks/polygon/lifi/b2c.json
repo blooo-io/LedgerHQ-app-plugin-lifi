@@ -1,0 +1,27 @@
+{
+    "chainId": 1,
+    "contracts": [
+        {
+            "address": "0x362fA9D0bCa5D19f743Db50738345ce2b40eC99f",
+            "contractName": "LiFiDiamond",
+            "selectors": {
+                "0x7c025200": {
+                    "erc20OfInterest": [
+                        "desc.srcToken",
+                        "desc.dstToken"
+                    ],
+                    "method": "swapTokensGeneric",
+                    "plugin": "lifi"
+                },
+                "0x7d7aecd3": {
+                    "erc20OfInterest": [
+                        "srcToken"
+                    ],
+                    "method": "startBridgeTokensViaNXTP",
+                    "plugin": "lifi"
+                }
+            }
+        }
+    ],
+    "name": "lifi"
+}

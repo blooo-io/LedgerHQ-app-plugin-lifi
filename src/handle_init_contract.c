@@ -1,4 +1,4 @@
-#include "one_inch_plugin.h"
+#include "lifi_plugin.h"
 
 // Called once to init.
 void handle_init_contract(void *parameters) {
@@ -9,25 +9,25 @@ void handle_init_contract(void *parameters) {
         return;
     }
 
-    if (msg->pluginContextLength < sizeof(one_inch_parameters_t)) {
+    if (msg->pluginContextLength < sizeof(lifi_parameters_t)) {
         msg->result = ETH_PLUGIN_RESULT_ERROR;
         return;
     }
 
-    one_inch_parameters_t *context = (one_inch_parameters_t *) msg->pluginContext;
+    lifi_parameters_t *context = (lifi_parameters_t *) msg->pluginContext;
     memset(context, 0, sizeof(*context));
     context->valid = 1;
 
     // Determine a function to call
     size_t i;
-    for (i = 0; i < NUM_ONE_INCH_SELECTORS; i++) {
-        if (memcmp((uint8_t *) PIC(ONE_INCH_SELECTORS[i]), msg->selector, SELECTOR_SIZE) == 0) {
+    for (i = 0; i < NUM_LIFI_SELECTORS; i++) {
+        if (memcmp((uint8_t *) PIC(LIFI_SELECTORS[i]), msg->selector, SELECTOR_SIZE) == 0) {
             context->selectorIndex = i;
             break;
         }
     }
 
-    if (i == NUM_ONE_INCH_SELECTORS) {
+    if (i == NUM_LIFI_SELECTORS) {
         // Selector was not found
         msg->result = ETH_PLUGIN_RESULT_ERROR;
         return;
@@ -35,39 +35,13 @@ void handle_init_contract(void *parameters) {
 
     // Set `next_param` to be the first field we expect to parse.
     switch (context->selectorIndex) {
-        case SWAP:
-            // Skip caller, structure offset and data offset
-            context->skip = 3;
+        case SWAP_TOKENS_GENERIC:
+            // Skip _lifiData offset
+            context->skip = 1;
+            context->next_param = OFFSET;
+            break;
+        case START_BRIDGE_TOKENS_VIA_NXTP:
             context->next_param = TOKEN_SENT;
-            break;
-        case UNOSWAP:
-            context->next_param = TOKEN_SENT;
-            break;
-        case UNISWAP_V3_SWAP:
-            context->next_param = AMOUNT_SENT;
-            break;
-        case UNISWAP_V3_SWAP_TO:
-            context->next_param = DST_RECEIVER;
-            break;
-        case UNISWAP_V3_SWAP_TO_WITH_PERMIT:
-            context->next_param = DST_RECEIVER;
-            break;
-        case UNOSWAP_WITH_PERMIT:
-            context->next_param = TOKEN_SENT;
-            break;
-        case CLIPPER_SWAP:
-            context->next_param = TOKEN_SENT;
-            break;
-        case CLIPPER_SWAP_TO_WITH_PERMIT:
-            context->next_param = DST_RECEIVER;
-            break;
-        case FILL_ORDER_RFQ:
-            context->skip = 5;
-            context->next_param = AMOUNT_SENT;
-            break;
-        case FILL_ORDER_RFQ_TO_WITH_PERMIT:
-            context->skip = 5;
-            context->next_param = AMOUNT_SENT;
             break;
         default:
             PRINTF("Missing selectorIndex\n");

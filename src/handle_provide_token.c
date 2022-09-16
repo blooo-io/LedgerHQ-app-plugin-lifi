@@ -1,19 +1,19 @@
-#include "one_inch_plugin.h"
+#include "lifi_plugin.h"
 
-static void sent_network_token(one_inch_parameters_t *context) {
+static void sent_network_token(lifi_parameters_t *context) {
     context->decimals_sent = WEI_TO_ETHER;
     context->tokens_found |= TOKEN_SENT_FOUND;
 }
 
-static void received_network_token(one_inch_parameters_t *context) {
+static void received_network_token(lifi_parameters_t *context) {
     context->decimals_received = WEI_TO_ETHER;
     context->tokens_found |= TOKEN_RECEIVED_FOUND;
 }
 
 void handle_provide_token(void *parameters) {
     ethPluginProvideInfo_t *msg = (ethPluginProvideInfo_t *) parameters;
-    one_inch_parameters_t *context = (one_inch_parameters_t *) msg->pluginContext;
-    PRINTF("1INCH plugin provide token: 0x%p, 0x%p\n", msg->item1, msg->item2);
+    lifi_parameters_t *context = (lifi_parameters_t *) msg->pluginContext;
+    PRINTF("LIFI plugin provide tokens : 0x%p, 0x%p\n", msg->item1, msg->item2);
 
     if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
         sent_network_token(context);
