@@ -25,15 +25,11 @@ static void handle_token_received(ethPluginProvideParameter_t *msg,
 }
 
 
-handle_swap_tokens_generic(ethPluginProvideParameter_t *msg, lifi_parameters_t *context){
+static void handle_swap_tokens_generic(ethPluginProvideParameter_t *msg, lifi_parameters_t *context){
     switch (context->next_param) {
-        case OFFSET: // _swapData offset
-            PRINTF("SWITCH OFFSET OK\n");
-                        
-            // Skips to the relevant parameter
+        case OFFSET: // _swapData offset        
             context->offset = U2BE(msg->parameter,
                             PARAMETER_LENGTH - sizeof(context->offset));
-            //context->skip += 4;
             context->next_param = SKIP;
             break;
         case SKIP:
@@ -61,7 +57,7 @@ handle_swap_tokens_generic(ethPluginProvideParameter_t *msg, lifi_parameters_t *
     }
 }
 
-handle_start_bridge_tokens_via_nxtp(ethPluginProvideParameter_t *msg, lifi_parameters_t *context){
+static void handle_start_bridge_tokens_via_nxtp(ethPluginProvideParameter_t *msg, lifi_parameters_t *context){
     switch (context->next_param) {
         case TOKEN_SENT:
             break;

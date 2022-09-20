@@ -8,7 +8,7 @@ void handle_query_contract_id(void *parameters) {
 
     switch (context->selectorIndex) {
         case SWAP_TOKENS_GENERIC:
-            strlcpy(msg->version, "Swap Tokens", msg->versionLength);
+            strlcpy(msg->version, "Swap Tokens Generic", msg->versionLength);
             break;
         case START_BRIDGE_TOKENS_VIA_NXTP:
             strlcpy(msg->version, "Start Bridge Tokens Via NXTP", msg->versionLength);
