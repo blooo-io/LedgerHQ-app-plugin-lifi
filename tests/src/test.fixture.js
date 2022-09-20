@@ -154,7 +154,7 @@ async function processTransaction(eth, sim, steps, label, rawTxHex, srlTx = "") 
     .catch((e) => {
       console.warn(
         "an error occurred in resolveTransaction => fallback to blind signing: " +
-          String(e)
+          e.stack
       );
       return null;
     });
