@@ -25,9 +25,9 @@ const APP_PATH_NANOS = Resolve('elfs/ethereum_nanos.elf');
 const APP_PATH_NANOX = Resolve('elfs/ethereum_nanox.elf');
 const APP_PATH_NANOSP = Resolve('elfs/ethereum_nanosp.elf');
 
-const PLUGIN_LIB_NANOS = { 'lifi': Resolve('elfs/lifi_nanos.elf') };
-const PLUGIN_LIB_NANOX = { 'lifi': Resolve('elfs/lifi_nanox.elf') };
-const PLUGIN_LIB_NANOSP = { 'lifi': Resolve('elfs/lifi_nanosp.elf') };
+const PLUGIN_LIB_NANOS = { 'LiFi': Resolve('elfs/lifi_nanos.elf') };
+const PLUGIN_LIB_NANOX = { 'LiFi': Resolve('elfs/lifi_nanox.elf') };
+const PLUGIN_LIB_NANOSP = { 'LiFi': Resolve('elfs/lifi_nanosp.elf') };
 
 const RANDOM_ADDRESS = "0xaaaabbbbccccddddeeeeffffgggghhhhiiiijjjj";
 

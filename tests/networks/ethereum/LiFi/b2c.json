@@ -11,10 +11,10 @@
                         "_swapData.0.receivingAssetId"
                     ],
                     "method": "swapTokensGeneric",
-                    "plugin": "lifi"
+                    "plugin": "LiFi"
                 }
             }
         }
     ],
-    "name": "lifi"
+    "name": "LiFi"
 }
