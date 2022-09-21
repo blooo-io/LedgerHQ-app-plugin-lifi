@@ -1,0 +1,94 @@
+[
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "bytes32",
+						"name": "transactionId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "string",
+						"name": "integrator",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "referrer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "sendingAssetId",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "receivingAssetId",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "receiver",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "destinationChainId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct ILiFi.LiFiData",
+				"name": "_lifiData",
+				"type": "tuple"
+			},
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "callTo",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "approveTo",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "sendingAssetId",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "receivingAssetId",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "fromAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "callData",
+						"type": "bytes"
+					}
+				],
+				"internalType": "struct LibSwap.SwapData[]",
+				"name": "_swapData",
+				"type": "tuple[]"
+			}
+		],
+		"name": "swapTokensGeneric",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	}
+]
