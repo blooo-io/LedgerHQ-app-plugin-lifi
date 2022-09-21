@@ -12,7 +12,7 @@
 #define NUM_LIFI_SELECTORS 2
 #define SELECTOR_SIZE          4
 
-#define PLUGIN_NAME "lifi"
+#define PLUGIN_NAME "LiFi"
 
 #define TOKEN_SENT_FOUND     1
 #define TOKEN_RECEIVED_FOUND 1 << 1

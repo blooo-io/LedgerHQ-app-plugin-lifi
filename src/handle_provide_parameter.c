@@ -82,7 +82,7 @@ static void handle_start_bridge_tokens_via_nxtp(ethPluginProvideParameter_t *msg
 void handle_provide_parameter(void *parameters) {
     ethPluginProvideParameter_t *msg = (ethPluginProvideParameter_t *) parameters;
     lifi_parameters_t *context = (lifi_parameters_t *) msg->pluginContext;
-    printf_hex_array("lifi plugin provide parameter: ", PARAMETER_LENGTH, msg->parameter);
+    printf_hex_array("LiFi plugin provide parameter: ", PARAMETER_LENGTH, msg->parameter);
 
     msg->result = ETH_PLUGIN_RESULT_OK;
 

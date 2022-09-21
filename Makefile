@@ -29,7 +29,7 @@ APPVERSION_N     = 0
 APPVERSION_P     = 4
 APPVERSION       = "$(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)"
 
-APPNAME = "lifi"
+APPNAME = "LiFi"
 
 #prepare hsm generation
 ifeq ($(TARGET_NAME), TARGET_NANOS)
@@ -161,4 +161,4 @@ include $(BOLOS_SDK)/Makefile.rules
 dep/%.d: %.c Makefile
 
 listvariants:
-	@echo VARIANTS NONE lifi
+	@echo VARIANTS NONE LiFi

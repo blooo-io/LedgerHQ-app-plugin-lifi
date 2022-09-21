@@ -13,7 +13,7 @@ static void received_network_token(lifi_parameters_t *context) {
 void handle_provide_token(void *parameters) {
     ethPluginProvideInfo_t *msg = (ethPluginProvideInfo_t *) parameters;
     lifi_parameters_t *context = (lifi_parameters_t *) msg->pluginContext;
-    PRINTF("LIFI plugin provide tokens : 0x%p, 0x%p\n", msg->item1, msg->item2);
+    PRINTF("LiFi plugin provide tokens : 0x%p, 0x%p\n", msg->item1, msg->item2);
 
     if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
         sent_network_token(context);
