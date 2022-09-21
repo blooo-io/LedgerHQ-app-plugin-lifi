@@ -1,4 +1,4 @@
-import { processTest, populateTransaction } from "./test.fixture";
+import { processTest, populateTransaction } from "../test.fixture";
 
 const contractName = "LiFiDiamond";
 
