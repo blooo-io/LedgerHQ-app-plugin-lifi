@@ -75,12 +75,6 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
     bool both_tokens_found = token_received_found && token_sent_found;
     bool both_tokens_not_found = !token_received_found && !token_sent_found;
 
-    PRINTF("both_tokens_found: %d\n", both_tokens_found);
-    PRINTF("token_sent_found: %d\n", token_sent_found);
-    PRINTF("token_received_found: %d\n", token_received_found);
-    PRINTF("both_tokens_not_found: %d\n", both_tokens_not_found);
-
-
     switch (index) {
         case 0:
             if (both_tokens_found) {

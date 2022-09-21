@@ -1,6 +1,5 @@
 #include "lifi_plugin.h"
 
-
 // Store the amount sent in the form of a string, without any ticker or decimals. These will be
 // added when displaying.
 static void handle_amount_sent(ethPluginProvideParameter_t *msg, lifi_parameters_t *context) {
@@ -24,12 +23,11 @@ static void handle_token_received(ethPluginProvideParameter_t *msg,
     printf_hex_array("TOKEN RECEIVED: ", ADDRESS_LENGTH, context->contract_address_received);
 }
 
-
-static void handle_swap_tokens_generic(ethPluginProvideParameter_t *msg, lifi_parameters_t *context){
+static void handle_swap_tokens_generic(ethPluginProvideParameter_t *msg,
+                                       lifi_parameters_t *context) {
     switch (context->next_param) {
         case OFFSET: // _swapData offset        
-            context->offset = U2BE(msg->parameter,
-                            PARAMETER_LENGTH - sizeof(context->offset));
+            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - sizeof(context->offset));
             context->next_param = SKIP;
             break;
         case SKIP:
@@ -57,7 +55,8 @@ static void handle_swap_tokens_generic(ethPluginProvideParameter_t *msg, lifi_pa
     }
 }
 
-static void handle_start_bridge_tokens_via_nxtp(ethPluginProvideParameter_t *msg, lifi_parameters_t *context){
+static void handle_start_bridge_tokens_via_nxtp(ethPluginProvideParameter_t *msg,
+                                                lifi_parameters_t *context) {
     switch (context->next_param) {
         case TOKEN_SENT:
             break;
@@ -78,7 +77,6 @@ static void handle_start_bridge_tokens_via_nxtp(ethPluginProvideParameter_t *msg
     }
 }
 
-
 void handle_provide_parameter(void *parameters) {
     ethPluginProvideParameter_t *msg = (ethPluginProvideParameter_t *) parameters;
     lifi_parameters_t *context = (lifi_parameters_t *) msg->pluginContext;
@@ -91,7 +89,8 @@ void handle_provide_parameter(void *parameters) {
         // Skip this step, and don't forget to decrease skipping counter.
         context->skip--;
     } else {
-        if ((context->offset) && msg->parameterOffset != context->checkpoint + context->offset + SELECTOR_SIZE) {
+        if ((context->offset) &&
+            msg->parameterOffset != context->checkpoint + context->offset + SELECTOR_SIZE) {
             PRINTF("offset: %d, checkpoint: %d, parameterOffset: %d\n",
                    context->offset,
                    context->checkpoint,
