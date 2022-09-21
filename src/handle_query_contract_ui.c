@@ -57,13 +57,6 @@ static void set_receive_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context
     PRINTF("AMOUNT RECEIVED: %s\n", msg->msg);
 }
 
-// Set UI for "Partial fill" screen.
-static void set_partial_fill_ui(ethQueryContractUI_t *msg,
-                                lifi_parameters_t *context __attribute__((unused))) {
-    strlcpy(msg->title, "Partial fill", msg->titleLength);
-    strlcpy(msg->msg, "Enabled", msg->msgLength);
-}
-
 // Set UI for "Warning" screen.
 static void set_warning_ui(ethQueryContractUI_t *msg,
                            const lifi_parameters_t *context __attribute__((unused))) {
@@ -82,9 +75,9 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
     bool both_tokens_found = token_received_found && token_sent_found;
     bool both_tokens_not_found = !token_received_found && !token_sent_found;
 
+    PRINTF("both_tokens_found: %d\n", both_tokens_found);
     PRINTF("token_sent_found: %d\n", token_sent_found);
     PRINTF("token_received_found: %d\n", token_received_found);
-    PRINTF("both_tokens_found: %d\n", both_tokens_found);
     PRINTF("both_tokens_not_found: %d\n", both_tokens_not_found);
 
 
@@ -111,29 +104,15 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
             }
         case 2:
             if (both_tokens_found) {
-                return PARTIAL_FILL_SCREEN;
+                return ERROR;
             } else if (both_tokens_not_found) {
                 return WARN_SCREEN;
             } else {
                 return RECEIVE_SCREEN;
             }
         case 3:
-            if (both_tokens_found) {
-                return ERROR;
-            } else if (both_tokens_not_found) {
+            if (both_tokens_not_found) {
                 return RECEIVE_SCREEN;
-            } else {
-                return BENEFICIARY_SCREEN;
-            }
-        case 4:
-            if (both_tokens_not_found) {
-                return BENEFICIARY_SCREEN;
-            } else {
-                return PARTIAL_FILL_SCREEN;
-            }
-        case 5:
-            if (both_tokens_not_found) {
-                return PARTIAL_FILL_SCREEN;
             } else {
                 return ERROR;
             }
@@ -152,13 +131,11 @@ void handle_query_contract_ui(void *parameters) {
 
     screens_t screen = get_screen(msg, context);
     switch (screen) {
-        case SEND_SCREEN:set_send_ui(msg, context);
+        case SEND_SCREEN:
+            set_send_ui(msg, context);
             break;
         case RECEIVE_SCREEN:
             set_receive_ui(msg, context);
-            break;
-        case PARTIAL_FILL_SCREEN:
-            set_partial_fill_ui(msg, context);
             break;
         case WARN_SCREEN:
             set_warning_ui(msg, context);
