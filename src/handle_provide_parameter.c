@@ -25,7 +25,7 @@ static void handle_token_received(ethPluginProvideParameter_t *msg, lifi_paramet
 static void handle_swap_tokens_generic(ethPluginProvideParameter_t *msg,
                                        lifi_parameters_t *context) {
     switch (context->next_param) {
-        case OFFSET:  // _swapData offset        
+        case OFFSET:  // _swapData offset
             context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - sizeof(context->offset));
             context->next_param = SKIP;
             break;
