@@ -76,7 +76,7 @@ jobs:
             --form token=$TOKEN \
             --form email=$EMAIL \
             --form file=@cov-int.tar.gz \
-            --form version=master \
+            --form version="master" \
             --form description="LiFi Plugin" \
             https://scan.coverity.com/builds?project=blooo-io%2FLedgerHQ-app-plugin-lifi
         env:
