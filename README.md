@@ -1,6 +1,10 @@
 # Badges
 [![Code style check](https://github.com/blooo-io/app-plugin-1inch/actions/workflows/lint-workflow.yml/badge.svg)](https://github.com/blooo-io/app-plugin-1inch/actions/workflows/lint-workflow.yml)
 [![Compilation & tests](https://github.com/blooo-io/app-plugin-1inch/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/blooo-io/app-plugin-1inch/actions/workflows/ci-workflow.yml)
+<a href="https://scan.coverity.com/projects/blooo-io-ledgerhq-app-plugin-lifi">
+  <img alt="Coverity Scan Build Status"
+       src="https://scan.coverity.com/projects/26195/badge.svg"/>
+</a>
 
 # Ledger 1inch Plugin
 
