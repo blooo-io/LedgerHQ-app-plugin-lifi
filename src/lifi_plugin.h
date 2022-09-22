@@ -17,6 +17,8 @@
 #define TOKEN_SENT_FOUND     1
 #define TOKEN_RECEIVED_FOUND 1 << 1
 
+#define INT_64_LENGTH 16
+
 // 1inch uses `0xeeeee` as a dummy address to represent ETH in Swap.
 extern const uint8_t LIFI_ETH_ADDRESS[ADDRESS_LENGTH];
 
@@ -40,7 +42,12 @@ extern const uint8_t *const LIFI_SELECTORS[NUM_LIFI_SELECTORS];
 typedef enum {
     SEND_SCREEN,
     RECEIVE_SCREEN,
-    WARN_SCREEN,
+    FROM_CHAIN_SCREEN,
+    TO_CHAIN_SCREEN,
+    TO_ADDRESS_SCREEN,
+    WARN_TOKEN_SCREEN,
+    WARN_CHAIN_SCREEN,
+    CALL_TO_SCREEN,
     ERROR,
 } screens_t;
 
@@ -51,8 +58,8 @@ typedef enum {
 #define TOKEN_SENT       2  // Address of the token the user is sending.
 #define TOKEN_RECEIVED   3  // Address of the token sent to the user.
 #define ADDRESS_RECEIVER 4  // Address to which the contract will send the tokens.
-#define CHAIN_SENDER     5  // Chain ID of the source chain
-#define CHAIN_RECEIVER   6  // Chain ID of the destinantion chain
+#define CHAIN_RECEIVER   5  // Chain ID of the destinantion chain
+#define CALL_TO          6  // Address of the destination call
 #define OFFSET           7  // Offset to an array parameter's value
 #define SKIP \
     8  // Placeholder to be set when the parameter skipping could not be done (after an offset)
@@ -69,9 +76,11 @@ typedef struct lifi_parameters_t {
     uint8_t amount_sent[INT256_LENGTH];
     uint8_t amount_received[INT256_LENGTH];
     uint8_t contract_address_sent[ADDRESS_LENGTH];
-    uint8_t contract_address_received[ADDRESS_LENGTH];
+    uint8_t contract_address_received[ADDRESS_LENGTH];  // stores the receiver address in
+                                                        // startBridgeTokensViaNXTP
     char ticker_sent[MAX_TICKER_LEN];
     char ticker_received[MAX_TICKER_LEN];
+    uint8_t chain_id_receiver[INT_64_LENGTH];
 
     uint16_t offset;
     uint16_t checkpoint;
@@ -83,10 +92,11 @@ typedef struct lifi_parameters_t {
     uint8_t selectorIndex;
     uint8_t flags;
     uint8_t skip;
+    uint8_t has_dest_call;
 } lifi_parameters_t;
-// 32*2 + 2*20 + 12*2 = 128
-// 2*2 + 1*8 = 12
-// 12+96 = 140
+// 32*2 + 2*20 + 1*16 + 12*2 = 144
+// 2*2 + 1*9 = 13
+// 144+13 = 157
 
 // Piece of code that will check that the above structure is not bigger than 5 * 32.
 // Do not remove this check.

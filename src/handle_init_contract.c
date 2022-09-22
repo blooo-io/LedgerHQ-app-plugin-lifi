@@ -41,7 +41,9 @@ void handle_init_contract(void *parameters) {
             context->next_param = OFFSET;
             break;
         case START_BRIDGE_TOKENS_VIA_NXTP:
-            context->next_param = TOKEN_SENT;
+            // Skip _lifiData offset
+            context->skip = 1;
+            context->next_param = OFFSET;
             break;
         default:
             PRINTF("Missing selectorIndex\n");

@@ -64,9 +64,30 @@ static void set_warning_ui(ethQueryContractUI_t *msg,
     strlcpy(msg->msg, "Unknown token", msg->msgLength);
 }
 
+static void set_address_to_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
+    strlcpy(msg->title, "To Address", msg->titleLength);
+
+    msg->msg[0] = '0';
+    msg->msg[1] = 'x';
+
+    switch (context->selectorIndex) {
+        case START_BRIDGE_TOKENS_VIA_NXTP:
+            getEthAddressStringFromBinary((uint8_t *) context->contract_address_received,
+                                          msg->msg + 2,
+                                          msg->pluginSharedRW->sha3,
+                                          0);
+            break;
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            return;
+    }
+}
+
 // Helper function that returns the enum corresponding to the screen that should be displayed.
-static screens_t get_screen(ethQueryContractUI_t *msg,
-                            lifi_parameters_t *context __attribute__((unused))) {
+static screens_t get_screen_swap_tokens_generic(ethQueryContractUI_t *msg,
+                                                lifi_parameters_t *context
+                                                __attribute__((unused))) {
     uint8_t index = msg->screenIndex;
 
     bool token_sent_found = context->tokens_found & TOKEN_SENT_FOUND;
@@ -80,11 +101,11 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
             if (both_tokens_found) {
                 return SEND_SCREEN;
             } else if (both_tokens_not_found) {
-                return WARN_SCREEN;
+                return WARN_TOKEN_SCREEN;
             } else if (token_sent_found) {
                 return SEND_SCREEN;
             } else if (token_received_found) {
-                return WARN_SCREEN;
+                return WARN_TOKEN_SCREEN;
             }
         case 1:
             if (both_tokens_found) {
@@ -92,7 +113,7 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
             } else if (both_tokens_not_found) {
                 return SEND_SCREEN;
             } else if (token_sent_found) {
-                return WARN_SCREEN;
+                return WARN_TOKEN_SCREEN;
             } else if (token_received_found) {
                 return SEND_SCREEN;
             }
@@ -100,7 +121,7 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
             if (both_tokens_found) {
                 return ERROR;
             } else if (both_tokens_not_found) {
-                return WARN_SCREEN;
+                return WARN_TOKEN_SCREEN;
             } else {
                 return RECEIVE_SCREEN;
             }
@@ -116,6 +137,89 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
     return ERROR;
 }
 
+static screens_t get_screen_start_bridge_tokens_via_nxtp(ethQueryContractUI_t *msg,
+                                                         lifi_parameters_t *context
+                                                         __attribute__((unused))) {
+    uint8_t index = msg->screenIndex;
+
+    bool token_sent_found = context->tokens_found & TOKEN_SENT_FOUND;
+    bool chain_id_receiver_found = context->chain_id_receiver;  // warning here
+
+    switch (index) {
+        case 0:
+            if (token_sent_found && chain_id_receiver_found) {
+                return SEND_SCREEN;
+            } else if (!token_sent_found && !chain_id_receiver_found) {
+                return WARN_TOKEN_SCREEN;
+            } else if (!token_sent_found) {
+                return WARN_TOKEN_SCREEN;
+            } else if (!chain_id_receiver_found) {
+                return SEND_SCREEN;
+            }
+        case 1:
+            if (token_sent_found && chain_id_receiver_found) {
+                return FROM_CHAIN_SCREEN;
+            } else if (!token_sent_found && !chain_id_receiver_found) {
+                return SEND_SCREEN;
+            } else if (!token_sent_found) {
+                return SEND_SCREEN;
+            } else if (!chain_id_receiver_found) {
+                return FROM_CHAIN_SCREEN;
+            }
+        case 2:
+            if (token_sent_found && chain_id_receiver_found) {
+                return TO_CHAIN_SCREEN;
+            } else if (!token_sent_found && !chain_id_receiver_found) {
+                return FROM_CHAIN_SCREEN;
+            } else if (!token_sent_found) {
+                return FROM_CHAIN_SCREEN;
+            } else if (!chain_id_receiver_found) {
+                return WARN_CHAIN_SCREEN;
+            }
+        case 3:
+            if (token_sent_found && chain_id_receiver_found) {
+                return TO_ADDRESS_SCREEN;
+            } else if (!token_sent_found && !chain_id_receiver_found) {
+                return WARN_CHAIN_SCREEN;
+            } else if (!token_sent_found) {
+                return TO_CHAIN_SCREEN;
+            } else if (!chain_id_receiver_found) {
+                return TO_CHAIN_SCREEN;
+            }
+        case 4:
+            if (token_sent_found && chain_id_receiver_found) {
+                return CALL_TO_SCREEN;
+            } else if (!token_sent_found && !chain_id_receiver_found) {
+                return TO_CHAIN_SCREEN;
+            } else if (!token_sent_found) {
+                return TO_ADDRESS_SCREEN;
+            } else if (!chain_id_receiver_found) {
+                return TO_ADDRESS_SCREEN;
+            }
+        case 5:
+            if (token_sent_found && chain_id_receiver_found) {
+                return ERROR;
+            } else if (!token_sent_found && !chain_id_receiver_found) {
+                return TO_ADDRESS_SCREEN;
+            } else if (!token_sent_found) {
+                return CALL_TO_SCREEN;
+            } else if (!chain_id_receiver_found) {
+                return CALL_TO_SCREEN;
+            }
+        case 6:
+            if (!token_sent_found && !chain_id_receiver_found) {
+                return CALL_TO_SCREEN;
+            } else if (!token_sent_found) {
+                return ERROR;
+            } else if (!chain_id_receiver_found) {
+                return ERROR;
+            }
+        default:
+            return ERROR;
+    }
+    return ERROR;
+}
+
 void handle_query_contract_ui(void *parameters) {
     ethQueryContractUI_t *msg = (ethQueryContractUI_t *) parameters;
     lifi_parameters_t *context = (lifi_parameters_t *) msg->pluginContext;
@@ -123,7 +227,18 @@ void handle_query_contract_ui(void *parameters) {
     memset(msg->msg, 0, msg->msgLength);
     msg->result = ETH_PLUGIN_RESULT_OK;
 
-    screens_t screen = get_screen(msg, context);
+    screens_t screen;
+    switch (context->selectorIndex) {
+        case SWAP_TOKENS_GENERIC:
+            get_screen_swap_tokens_generic(msg, context);
+        case START_BRIDGE_TOKENS_VIA_NXTP:
+            get_screen_start_bridge_tokens_via_nxtp(msg, context);
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            return;
+    }
+
     switch (screen) {
         case SEND_SCREEN:
             set_send_ui(msg, context);
@@ -131,8 +246,19 @@ void handle_query_contract_ui(void *parameters) {
         case RECEIVE_SCREEN:
             set_receive_ui(msg, context);
             break;
-        case WARN_SCREEN:
+        case FROM_CHAIN_SCREEN:
+            break;
+        case TO_CHAIN_SCREEN:
+            break;
+        case TO_ADDRESS_SCREEN:
+            set_address_to_ui(msg, context);
+            break;
+        case WARN_TOKEN_SCREEN:
             set_warning_ui(msg, context);
+            break;
+        case WARN_CHAIN_SCREEN:
+            break;
+        case CALL_TO_SCREEN:
             break;
         default:
             PRINTF("Received an invalid screenIndex\n");
