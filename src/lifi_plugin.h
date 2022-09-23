@@ -12,6 +12,9 @@
 #define NUM_LIFI_SELECTORS 2
 #define SELECTOR_SIZE      4
 
+#define NUM_LIFI_NETWORKS         3
+#define LIFI_MAX_NETWORK_NAME_LEN 40
+
 #define PLUGIN_NAME "LiFi"
 
 #define TOKEN_SENT_FOUND     1
@@ -70,6 +73,17 @@ typedef enum {
 
 // Ticker used when the token wasn't found in the CAL.
 #define DEFAULT_TICKER ""
+
+typedef struct lifi_network_info_s {
+    uint8_t chain_id[INT_64_LENGTH];
+    char name[LIFI_MAX_NETWORK_NAME_LEN];
+} lifi_network_info_t;
+
+// Hardcoded chain IDs here to display the involved networks in the bridge method
+extern const lifi_network_info_t LIFI_NETWORK_MAPPING[NUM_LIFI_NETWORKS];
+
+// This will be compared to chain_id_receiver in context
+extern const uint8_t NULL_CHAIN_ID[INT_64_LENGTH];
 
 // Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.
 typedef struct lifi_parameters_t {

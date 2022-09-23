@@ -43,7 +43,7 @@ static void handle_address_receiver(ethPluginProvideParameter_t *msg, lifi_param
 }
 
 static void handle_chain_receiver(ethPluginProvideParameter_t *msg, lifi_parameters_t *context) {
-    memset(context->chain_id_receiver, 0, sizeof(context->chain_id_receiver));
+    // chain_id_receiver's memory is already set to 0
     memcpy(context->chain_id_receiver,
            &msg->parameter[PARAMETER_LENGTH - INT_64_LENGTH],
            INT_64_LENGTH);
