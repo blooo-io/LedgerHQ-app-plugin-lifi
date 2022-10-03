@@ -45,11 +45,9 @@ extern const uint8_t *const LIFI_SELECTORS[NUM_LIFI_SELECTORS];
 typedef enum {
     SEND_SCREEN,
     RECEIVE_SCREEN,
-    FROM_CHAIN_SCREEN,
     TO_CHAIN_SCREEN,
     TO_ADDRESS_SCREEN,
     WARN_TOKEN_SCREEN,
-    WARN_CHAIN_SCREEN,
     CALL_TO_SCREEN,
     ERROR,
 } screens_t;

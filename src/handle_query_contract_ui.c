@@ -1,15 +1,9 @@
 #include "lifi_plugin.h"
 
 static const char *get_network_name(uint8_t *chain_id) {
-    printf_hex_array("PARAM GET_NETWORK : ", INT_64_LENGTH, chain_id);
     for (size_t i = 0; i < NUM_LIFI_NETWORKS; i++) {
-        PRINTF("LIFI_NETWORK_MAPPING name : %s\n", LIFI_NETWORK_MAPPING[i].name);
-        printf_hex_array("LIFI_NETWORK_MAPPING ID : ",
-                         INT_64_LENGTH,
-                         LIFI_NETWORK_MAPPING[i].chain_id);
-        if (!memcmp(&LIFI_NETWORK_MAPPING[0].chain_id, chain_id, INT_64_LENGTH)) {
-            PRINTF("LIFI_NETWORK_MAPPING : MATCHING IDS");
-            return (const char *) LIFI_NETWORK_MAPPING[0].name;
+        if (!memcmp(&LIFI_NETWORK_MAPPING[i].chain_id, chain_id, INT_64_LENGTH)) {
+            return (const char *) LIFI_NETWORK_MAPPING[i].name;
         }
     }
     return "Unknown Network";
@@ -74,42 +68,10 @@ static void set_receive_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context
 static void set_warning_token_ui(ethQueryContractUI_t *msg,
                                  const lifi_parameters_t *context __attribute__((unused))) {
     switch (context->selectorIndex) {
+        case SWAP_TOKENS_GENERIC:
         case START_BRIDGE_TOKENS_VIA_NXTP:
             strlcpy(msg->title, "WARNING", msg->titleLength);
             strlcpy(msg->msg, "Unknown token", msg->msgLength);
-            break;
-        default:
-            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
-            return;
-    }
-}
-
-// Set UI for "Warning" screen for unknown chains.
-static void set_warning_chain_ui(ethQueryContractUI_t *msg,
-                                 const lifi_parameters_t *context __attribute__((unused))) {
-    switch (context->selectorIndex) {
-        case START_BRIDGE_TOKENS_VIA_NXTP:
-            strlcpy(msg->title, "WARNING", msg->titleLength);
-            strlcpy(msg->msg, "Unknown chain", msg->msgLength);
-            break;
-        default:
-            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
-            return;
-    }
-}
-
-static void set_from_chain_ui(ethQueryContractUI_t *msg,
-                              const lifi_parameters_t *context __attribute__((unused))) {
-    uint8_t chain_id[INT_64_LENGTH];
-    switch (context->selectorIndex) {
-        case START_BRIDGE_TOKENS_VIA_NXTP:
-            memcpy(chain_id,
-                   &msg->pluginSharedRO->txContent->chainID.value[INT_64_LENGTH],
-                   sizeof(chain_id));
-            strlcpy(msg->title, "To network", msg->titleLength);
-            strlcpy(msg->msg, get_network_name(chain_id), msg->msgLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -124,7 +86,7 @@ static void set_to_chain_ui(ethQueryContractUI_t *msg,
     switch (context->selectorIndex) {
         case START_BRIDGE_TOKENS_VIA_NXTP:
             memcpy(chain_id, &context->chain_id_receiver, sizeof(chain_id));
-            strlcpy(msg->title, "From network", msg->titleLength);
+            strlcpy(msg->title, "To network", msg->titleLength);
             strlcpy(msg->msg, get_network_name(chain_id), msg->msgLength);
             break;
         default:
@@ -157,7 +119,7 @@ static void set_address_to_ui(ethQueryContractUI_t *msg, lifi_parameters_t *cont
 static void set_is_contract_call_screen(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
     switch (context->selectorIndex) {
         case START_BRIDGE_TOKENS_VIA_NXTP:
-            strlcpy(msg->title, "Executes a contract call", msg->titleLength);
+            strlcpy(msg->title, "Executes contract call", msg->titleLength);
             if (context->has_dest_call) {
                 strlcpy(msg->msg, "Yes", msg->titleLength);
             } else {
@@ -231,78 +193,37 @@ static screens_t get_screen_start_bridge_tokens_via_nxtp(ethQueryContractUI_t *m
     uint8_t index = msg->screenIndex;
 
     bool token_sent_found = context->tokens_found & TOKEN_SENT_FOUND;
-    bool chain_id_receiver_found = !memcmp(context->chain_id_receiver,
-                                           NULL_CHAIN_ID,
-                                           INT_64_LENGTH);  // warning here
 
     switch (index) {
         case 0:
-            if (token_sent_found && chain_id_receiver_found) {
+            if (token_sent_found) {
                 return SEND_SCREEN;
-            } else if (!token_sent_found && !chain_id_receiver_found) {
+            } else {
                 return WARN_TOKEN_SCREEN;
-            } else if (!token_sent_found) {
-                return WARN_TOKEN_SCREEN;
-            } else if (!chain_id_receiver_found) {
-                return SEND_SCREEN;
             }
         case 1:
-            if (token_sent_found && chain_id_receiver_found) {
-                return FROM_CHAIN_SCREEN;
-            } else if (!token_sent_found && !chain_id_receiver_found) {
+            if (token_sent_found) {
+                return TO_CHAIN_SCREEN;
+            } else {
                 return SEND_SCREEN;
-            } else if (!token_sent_found) {
-                return SEND_SCREEN;
-            } else if (!chain_id_receiver_found) {
-                return FROM_CHAIN_SCREEN;
             }
         case 2:
-            if (token_sent_found && chain_id_receiver_found) {
+            if (token_sent_found) {
+                return TO_ADDRESS_SCREEN;
+            } else {
                 return TO_CHAIN_SCREEN;
-            } else if (!token_sent_found && !chain_id_receiver_found) {
-                return FROM_CHAIN_SCREEN;
-            } else if (!token_sent_found) {
-                return FROM_CHAIN_SCREEN;
-            } else if (!chain_id_receiver_found) {
-                return WARN_CHAIN_SCREEN;
             }
         case 3:
-            if (token_sent_found && chain_id_receiver_found) {
+            if (token_sent_found) {
+                return CALL_TO_SCREEN;
+            } else {
                 return TO_ADDRESS_SCREEN;
-            } else if (!token_sent_found && !chain_id_receiver_found) {
-                return WARN_CHAIN_SCREEN;
-            } else if (!token_sent_found) {
-                return TO_CHAIN_SCREEN;
-            } else if (!chain_id_receiver_found) {
-                return TO_CHAIN_SCREEN;
             }
         case 4:
-            if (token_sent_found && chain_id_receiver_found) {
-                return CALL_TO_SCREEN;
-            } else if (!token_sent_found && !chain_id_receiver_found) {
-                return TO_CHAIN_SCREEN;
-            } else if (!token_sent_found) {
-                return TO_ADDRESS_SCREEN;
-            } else if (!chain_id_receiver_found) {
-                return TO_ADDRESS_SCREEN;
-            }
-        case 5:
-            if (token_sent_found && chain_id_receiver_found) {
+            if (token_sent_found) {
                 return ERROR;
-            } else if (!token_sent_found && !chain_id_receiver_found) {
-                return TO_ADDRESS_SCREEN;
-            } else if (!token_sent_found) {
+            } else {
                 return CALL_TO_SCREEN;
-            } else if (!chain_id_receiver_found) {
-                return CALL_TO_SCREEN;
-            }
-        case 6:
-            if (!token_sent_found && !chain_id_receiver_found) {
-                return CALL_TO_SCREEN;
-            } else if (!token_sent_found) {
-                return ERROR;
-            } else if (!chain_id_receiver_found) {
-                return ERROR;
             }
         default:
             return ERROR;
@@ -338,9 +259,6 @@ void handle_query_contract_ui(void *parameters) {
         case RECEIVE_SCREEN:
             set_receive_ui(msg, context);
             break;
-        case FROM_CHAIN_SCREEN:
-            set_from_chain_ui(msg, context);
-            break;
         case TO_CHAIN_SCREEN:
             set_to_chain_ui(msg, context);
             break;
@@ -349,9 +267,6 @@ void handle_query_contract_ui(void *parameters) {
             break;
         case WARN_TOKEN_SCREEN:
             set_warning_token_ui(msg, context);
-            break;
-        case WARN_CHAIN_SCREEN:
-            set_warning_chain_ui(msg, context);
             break;
         case CALL_TO_SCREEN:
             set_is_contract_call_screen(msg, context);
