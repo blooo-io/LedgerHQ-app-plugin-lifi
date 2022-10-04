@@ -35,7 +35,7 @@ void handle_provide_token(void *parameters) {
             }
             break;
         default:
-            PRINTF("Unhandled selector index in handle_provide_token");
+            PRINTF("Unhandled selector index in provide_token");
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             return;
     }
@@ -62,7 +62,7 @@ void handle_provide_token(void *parameters) {
         case START_BRIDGE_TOKENS_VIA_NXTP:
             break;
         default:
-            PRINTF("Unhandled selector index in handle_provide_token");
+            PRINTF("Unhandled selector index in provide_token");
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             return;
     }

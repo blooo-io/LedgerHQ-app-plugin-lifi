@@ -21,8 +21,7 @@ void handle_finalize(void *parameters) {
         }
 
         if (!ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
-            // Address is not network token (0xeee...) so we will need to look up the token in the
-            // CAL.
+            // Address is not network token (0x000...) so we will look for the token in the CAL.
             printf_hex_array("Setting address sent to: ",
                              ADDRESS_LENGTH,
                              context->contract_address_sent);
@@ -34,8 +33,7 @@ void handle_finalize(void *parameters) {
         // contract_address_received contains an account address in startBridgeTokensViaNXTP
         if (context->selectorIndex == SWAP_TOKENS_GENERIC) {
             if (!ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
-                // Address is not network token (0xeee...) so we will need to look up the token in
-                // the CAL.
+                // Address is not network token (0x000...) so we will look for the token in the CAL.
                 printf_hex_array("Setting address received to: ",
                                  ADDRESS_LENGTH,
                                  context->contract_address_received);

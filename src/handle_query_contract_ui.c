@@ -80,6 +80,7 @@ static void set_warning_token_ui(ethQueryContractUI_t *msg,
     }
 }
 
+// Set UI for "To Network" screen.
 static void set_to_chain_ui(ethQueryContractUI_t *msg,
                             const lifi_parameters_t *context __attribute__((unused))) {
     uint8_t chain_id[INT_64_LENGTH];
@@ -96,6 +97,7 @@ static void set_to_chain_ui(ethQueryContractUI_t *msg,
     }
 }
 
+// Set UI for "To Address" screen.
 static void set_address_to_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
     strlcpy(msg->title, "To Address", msg->titleLength);
 
@@ -116,9 +118,11 @@ static void set_address_to_ui(ethQueryContractUI_t *msg, lifi_parameters_t *cont
     }
 }
 
+// Set UI for "Executes Contract Call" screen.
 static void set_is_contract_call_screen(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
     switch (context->selectorIndex) {
         case START_BRIDGE_TOKENS_VIA_NXTP:
+            // Would overflow if we wrote "Executes a contract call"
             strlcpy(msg->title, "Executes contract call", msg->titleLength);
             if (context->has_dest_call) {
                 strlcpy(msg->msg, "Yes", msg->titleLength);
@@ -134,7 +138,7 @@ static void set_is_contract_call_screen(ethQueryContractUI_t *msg, lifi_paramete
 }
 
 // Helper function that returns the enum corresponding to the screen that should be
-// displayed.
+// displayed for the swapTokensGeneric selector
 static screens_t get_screen_swap_tokens_generic(ethQueryContractUI_t *msg,
                                                 lifi_parameters_t *context
                                                 __attribute__((unused))) {
@@ -187,6 +191,8 @@ static screens_t get_screen_swap_tokens_generic(ethQueryContractUI_t *msg,
     return ERROR;
 }
 
+// Helper function that returns the enum corresponding to the screen that should be
+// displayed for the startBridgeTokensViaNXTP selector
 static screens_t get_screen_start_bridge_tokens_via_nxtp(ethQueryContractUI_t *msg,
                                                          lifi_parameters_t *context
                                                          __attribute__((unused))) {
