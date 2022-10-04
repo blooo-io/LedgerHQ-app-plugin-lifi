@@ -12,6 +12,13 @@
                     ],
                     "method": "swapTokensGeneric",
                     "plugin": "LiFi"
+                },
+                "0x7d7aecd3": {
+                    "erc20OfInterest": [
+                        "_nxtpData.invariantData.sendingAssetId"
+                    ],
+                    "method": "startBridgeTokensViaNXTP",
+                    "plugin": "LiFi"
                 }
             }
         }
