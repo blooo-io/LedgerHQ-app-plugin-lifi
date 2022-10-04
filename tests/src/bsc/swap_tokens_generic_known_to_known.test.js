@@ -7,7 +7,7 @@ const testDirSuffix = "swap_tokens_generic_known_to_known"; // <= directory to c
 const testNetwork = "bsc";
 const signedPlugin = false;
 
-const contractAddr = "0x362fA9D0bCa5D19f743Db50738345ce2b40eC99f";
+const contractAddr = "0x362fa9d0bca5d19f743db50738345ce2b40ec99f";
 const chainID = 56;
 
 // From : https://bscscan.com/tx/0x05d3c6629fdf8c1a0e656f752e2be0d87cb5aedb101f1558a4d35650ccecb73b

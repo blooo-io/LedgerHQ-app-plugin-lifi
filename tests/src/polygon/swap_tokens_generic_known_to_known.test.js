@@ -7,7 +7,7 @@ const testDirSuffix = "swap_tokens_generic_known_to_known"; // <= directory to c
 const testNetwork = "polygon";
 const signedPlugin = false;
 
-const contractAddr = "0x362fA9D0bCa5D19f743Db50738345ce2b40eC99f";
+const contractAddr = "0x362fa9d0bca5d19f743db50738345ce2b40ec99f";
 const chainID = 137;
 
 // From https://polygonscan.com/tx/0xa3c3f7c699cf4121be37cf6dbb6a0a291c30e7180ca2c7a222a6709eef7f2603

@@ -7,7 +7,7 @@ const testDirSuffix = "SBTVNXTP_unknown_token_known_chain_calldata_false"; // <=
 const testNetwork = "bsc";
 const signedPlugin = false;
 
-const contractAddr = "0x362fA9D0bCa5D19f743Db50738345ce2b40eC99f";
+const contractAddr = "0x362fa9d0bca5d19f743db50738345ce2b40ec99f";
 const chainID = 56;
 
 // From : https://bscscan.com/tx/0x189239cb891e100a1b594a14e37f1534743c90c78fb2154f5666585768cd5f55

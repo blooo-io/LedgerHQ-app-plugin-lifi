@@ -7,7 +7,7 @@ const testDirSuffix = "SBTVNXTP_known_token_known_chain_calldata_true"; // <= di
 const testNetwork = "ethereum";
 const signedPlugin = false;
 
-const contractAddr = "0x362fA9D0bCa5D19f743Db50738345ce2b40eC99f";
+const contractAddr = "0x362fa9d0bca5d19f743db50738345ce2b40ec99f";
 const chainID = 1;
 
 // From : https://etherscan.io/tx/0x39dc29aea5ed260908f759790e002590095228db060f49b6756f8fa174eae2f5

@@ -7,7 +7,7 @@ const testDirSuffix = "swap_tokens_generic_unknown_to_known"; // <= directory to
 const testNetwork = "ethereum";
 const signedPlugin = false;
 
-const contractAddr = "0x362fA9D0bCa5D19f743Db50738345ce2b40eC99f";
+const contractAddr = "0x362fa9d0bca5d19f743db50738345ce2b40ec99f";
 const chainID = 1;
 
 // From : https://etherscan.io/tx/0xe5b95f4f6eabed2b1b180b8684f53932d034696f9616610863f7cc4308dd95a2

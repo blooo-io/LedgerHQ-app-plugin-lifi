@@ -7,7 +7,7 @@ const testDirSuffix = "SBTVNXTP_unknown_token_unknown_chain_calldata_false"; // 
 const testNetwork = "polygon";
 const signedPlugin = false;
 
-const contractAddr = "0x362fA9D0bCa5D19f743Db50738345ce2b40eC99f";
+const contractAddr = "0x362fa9d0bca5d19f743db50738345ce2b40ec99f";
 const chainID = 137;
 
 // From : https://polygonscan.com/tx/0x7e1581f8ff03b1f2a1f372f52370d8eb8e732d79dedac50cba7003099f2e5e0e
