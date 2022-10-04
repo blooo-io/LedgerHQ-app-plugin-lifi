@@ -19,11 +19,6 @@ const uint8_t *const LIFI_SELECTORS[NUM_LIFI_SELECTORS] = {
     LIFI_START_BRIDGE_TOKEN_VIA_NXTP_SELECTOR,
 };
 
-// Ask dummy address ETH
-// 1inch uses `0xeeeee` as a dummy address to represent ETH.
-const uint8_t LIFI_ETH_ADDRESS[ADDRESS_LENGTH] = {0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
-                                                  0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
-                                                  0xee, 0xee, 0xee, 0xee, 0xee, 0xee};
 // Used to indicate that the beneficiary should be the sender.
 const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                                                   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
