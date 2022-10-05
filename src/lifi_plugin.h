@@ -12,22 +12,21 @@
 #define NUM_LIFI_SELECTORS 2
 #define SELECTOR_SIZE      4
 
+#define NUM_LIFI_NETWORKS         3
+#define LIFI_MAX_NETWORK_NAME_LEN 40
+
 #define PLUGIN_NAME "LiFi"
 
 #define TOKEN_SENT_FOUND     1
 #define TOKEN_RECEIVED_FOUND 1 << 1
 
-// 1inch uses `0xeeeee` as a dummy address to represent ETH in Swap.
-extern const uint8_t LIFI_ETH_ADDRESS[ADDRESS_LENGTH];
+#define INT_64_LENGTH 16
 
-// 1inch uses 0x00000 as a dummy address to reprecent ETH in Unmoswap.
+// LiFi uses 0x00000 as a dummy address to represent ETH.
 extern const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH];
 
-// Returns 1 if corresponding address is the 1inch address for the chain token (ETH, BNB, MATIC,
-// etc.. are 0xeeeee...).
-#define ADDRESS_IS_NETWORK_TOKEN(_addr)                  \
-    (!memcmp(_addr, LIFI_ETH_ADDRESS, ADDRESS_LENGTH) || \
-     !memcmp(_addr, NULL_ETH_ADDRESS, ADDRESS_LENGTH))
+// Returns 1 if corresponding address is the LiFi address for the chain token (ETH, BNB, MATIC)
+#define ADDRESS_IS_NETWORK_TOKEN(_addr) !memcmp(_addr, NULL_ETH_ADDRESS, ADDRESS_LENGTH)
 
 typedef enum {
     SWAP_TOKENS_GENERIC,
@@ -40,7 +39,10 @@ extern const uint8_t *const LIFI_SELECTORS[NUM_LIFI_SELECTORS];
 typedef enum {
     SEND_SCREEN,
     RECEIVE_SCREEN,
-    WARN_SCREEN,
+    TO_CHAIN_SCREEN,
+    TO_ADDRESS_SCREEN,
+    WARN_TOKEN_SCREEN,
+    CALL_TO_SCREEN,
     ERROR,
 } screens_t;
 
@@ -51,12 +53,11 @@ typedef enum {
 #define TOKEN_SENT       2  // Address of the token the user is sending.
 #define TOKEN_RECEIVED   3  // Address of the token sent to the user.
 #define ADDRESS_RECEIVER 4  // Address to which the contract will send the tokens.
-#define CHAIN_SENDER     5  // Chain ID of the source chain
-#define CHAIN_RECEIVER   6  // Chain ID of the destinantion chain
+#define CHAIN_RECEIVER   5  // Chain ID of the destinantion chain
+#define CALL_TO          6  // Address of the destination call
 #define OFFSET           7  // Offset to an array parameter's value
-#define SKIP \
-    8  // Placeholder to be set when the parameter skipping could not be done (after an offset)
-#define NONE 9  // Placeholder variant to be set when parsing is done but data is still being sent.
+#define SKIP             8  // Placeholder to use when the parameter skipping happens after an offset
+#define NONE             9  // Placeholder variant to be set when parsing is done but data is still being sent.
 
 // Number of decimals used when the token wasn't found in the CAL.
 #define DEFAULT_DECIMAL WEI_TO_ETHER
@@ -64,14 +65,27 @@ typedef enum {
 // Ticker used when the token wasn't found in the CAL.
 #define DEFAULT_TICKER ""
 
+typedef struct lifi_network_info_s {
+    uint8_t chain_id[INT_64_LENGTH];
+    char name[LIFI_MAX_NETWORK_NAME_LEN];
+} lifi_network_info_t;
+
+// Hardcoded chain IDs to display the involved networks in the bridge methods
+extern const lifi_network_info_t LIFI_NETWORK_MAPPING[NUM_LIFI_NETWORKS];
+
+// This will be compared to chain_id_receiver in context
+extern const uint8_t NULL_CHAIN_ID[INT_64_LENGTH];
+
 // Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.
 typedef struct lifi_parameters_t {
     uint8_t amount_sent[INT256_LENGTH];
     uint8_t amount_received[INT256_LENGTH];
     uint8_t contract_address_sent[ADDRESS_LENGTH];
-    uint8_t contract_address_received[ADDRESS_LENGTH];
+    uint8_t contract_address_received[ADDRESS_LENGTH];  // stores the receiver address in
+                                                        // startBridgeTokensViaNXTP
     char ticker_sent[MAX_TICKER_LEN];
     char ticker_received[MAX_TICKER_LEN];
+    uint8_t chain_id_receiver[INT_64_LENGTH];
 
     uint16_t offset;
     uint16_t checkpoint;
@@ -83,10 +97,11 @@ typedef struct lifi_parameters_t {
     uint8_t selectorIndex;
     uint8_t flags;
     uint8_t skip;
+    uint8_t has_dest_call;
 } lifi_parameters_t;
-// 32*2 + 2*20 + 12*2 = 128
-// 2*2 + 1*8 = 12
-// 12+96 = 140
+// 32*2 + 2*20 + 1*16 + 12*2 = 144
+// 2*2 + 1*9 = 13
+// 144+13 = 157
 
 // Piece of code that will check that the above structure is not bigger than 5 * 32.
 // Do not remove this check.

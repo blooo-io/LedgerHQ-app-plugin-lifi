@@ -1,17 +1,17 @@
 # Badges
-[![Code style check](https://github.com/blooo-io/app-plugin-1inch/actions/workflows/lint-workflow.yml/badge.svg)](https://github.com/blooo-io/app-plugin-1inch/actions/workflows/lint-workflow.yml)
-[![Compilation & tests](https://github.com/blooo-io/app-plugin-1inch/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/blooo-io/app-plugin-1inch/actions/workflows/ci-workflow.yml)
+[![Code style check](https://github.com/blooo-io/LedgerHQ-app-plugin-lifi/actions/workflows/lint-workflow.yml/badge.svg)](https://github.com/blooo-io/LedgerHQ-app-plugin-lifi/actions/workflows/lint-workflow.yml)
+[![Compilation & tests](https://github.com/blooo-io/LedgerHQ-app-plugin-lifi/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/blooo-io/LedgerHQ-app-plugin-lifi/actions/workflows/ci-workflow.yml)
 
-# Ledger 1inch Plugin
+# Ledger LiFi Plugin
 
-This is a plugin for the Ethereum application which helps parsing and displaying relevant information when signing a 1inch transaction.
+This is a plugin for the Ethereum application which helps parsing and displaying relevant information when signing a LiFi transaction.
 
 ## Prerequisite
 
 Clone the plugin to a new folder.
 
 ```shell
-git clone https://github.com/blooo-io/app-plugin-1inch.git
+git clone https://github.com/blooo-io/LedgerHQ-app-plugin-lifi.git
 ```
 
 Then in the same folder clone two more repositories, which is the plugin-tools and app-ethereum.
@@ -28,12 +28,11 @@ Need more information about the interface, the architecture, or general stuff ab
 
 Smart contracts covered by this plugin are:
 
-| Network | Version | Smart Contract |
-| ---       | --- | --- |
-| Ethereum  | V3  | `0x11111112542D85B3EF69AE05771c2dCCff4fAa26`|
-| Ethereum  | V4  | `0x1111111254fb6c44bAC0beD2854e76F90643097d`|
-| Polygon   | V3  | `0x11111112542D85B3EF69AE05771c2dCCff4fAa26`|
-| Polygon   | V4  | `0x1111111254fb6c44bAC0beD2854e76F90643097d`|
+| Network  | Smart Contract |
+|   ---    | --- |
+| Ethereum | `0x362fa9d0bca5d19f743db50738345ce2b40ec99f`|
+| Polygon  | `0x362fa9d0bca5d19f743db50738345ce2b40ec99f`|
+| BSC      | `0x362fa9d0bca5d19f743db50738345ce2b40ec99f`|
 
 
 ## Build
@@ -44,18 +43,18 @@ cd plugin-tools  # go to plugin folder
 ./start.sh       # run the script start.sh
 ```
 The script will build a docker image and attach a console.
-When the docker image is running go to the "app-plugin-1inch" folder and build the ".elf" files.
+When the docker image is running go to the "LedgerHQ-app-plugin-lifi" folder and build the ".elf" files.
 ```shell
-cd app-plugin-1inch/tests       # go to the tests folder in app-plugin-1inch
-./build_local_test_elfs.sh      # run the script build_local_test_elfs.sh
+cd LedgerHQ-app-plugin-lifi/tests  # go to the tests folder in LedgerHQ-app-plugin-lifi
+./build_local_test_elfs.sh         # run the script build_local_test_elfs.sh
 ```
 
 ## Tests
 
-To test the plugin go to the tests folder from the "app-plugin-1inch" and run the script "test"
+To test the plugin go to the tests folder from the "LedgerHQ-app-plugin-lifi" and run the script "test"
 ```shell
-cd app-plugin-1inch/tests       # go to the tests folder in app-plugin-1inch
-yarn test                       # run the script test
+cd LedgerHQ-app-plugin-lifi/tests  # go to the tests folder in LedgerHQ-app-plugin-lifi
+yarn test                          # run the script test
 ```
 ## Continuous Integration
 

@@ -4,8 +4,10 @@
 // added when displaying.
 static void handle_amount_sent(ethPluginProvideParameter_t *msg, lifi_parameters_t *context) {
     memcpy(context->amount_sent, msg->parameter, INT256_LENGTH);
+    printf_hex_array("AMOUNT SENT: ", INT256_LENGTH, context->amount_sent);
 }
 
+// Stores the address of the sent token
 static void handle_token_sent(ethPluginProvideParameter_t *msg, lifi_parameters_t *context) {
     memset(context->contract_address_sent, 0, sizeof(context->contract_address_sent));
     memcpy(context->contract_address_sent,
@@ -14,6 +16,7 @@ static void handle_token_sent(ethPluginProvideParameter_t *msg, lifi_parameters_
     printf_hex_array("TOKEN SENT: ", ADDRESS_LENGTH, context->contract_address_sent);
 }
 
+// Stores the address of the received token
 static void handle_token_received(ethPluginProvideParameter_t *msg, lifi_parameters_t *context) {
     memset(context->contract_address_received, 0, sizeof(context->contract_address_received));
     memcpy(context->contract_address_received,
@@ -22,10 +25,40 @@ static void handle_token_received(ethPluginProvideParameter_t *msg, lifi_paramet
     printf_hex_array("TOKEN RECEIVED: ", ADDRESS_LENGTH, context->contract_address_received);
 }
 
+// Stores whether the transaction has a destination call or not
+static void handle_call_to(ethPluginProvideParameter_t *msg, lifi_parameters_t *context) {
+    context->has_dest_call = 0;
+    // If this address is not equal to 0x00...00, there is a destination call
+    if (memcmp(&msg->parameter[PARAMETER_LENGTH - ADDRESS_LENGTH],
+               NULL_ETH_ADDRESS,
+               ADDRESS_LENGTH)) {
+        context->has_dest_call += 1;
+    }
+    PRINTF("HAS DESTINATION CALL : %d\n", context->has_dest_call);
+}
+
+// Stores the receiver's address
+static void handle_address_receiver(ethPluginProvideParameter_t *msg, lifi_parameters_t *context) {
+    memset(context->contract_address_received, 0, sizeof(context->contract_address_received));
+    memcpy(context->contract_address_received,
+           &msg->parameter[PARAMETER_LENGTH - ADDRESS_LENGTH],
+           sizeof(context->contract_address_received));
+    printf_hex_array("ADDRESS RECEIVER: ", ADDRESS_LENGTH, context->contract_address_received);
+}
+
+// Stores the destination chain ID
+static void handle_chain_receiver(ethPluginProvideParameter_t *msg, lifi_parameters_t *context) {
+    // chain_id_receiver's memory is already set to 0
+    memcpy(context->chain_id_receiver,
+           &msg->parameter[PARAMETER_LENGTH - INT_64_LENGTH],
+           INT_64_LENGTH);
+    printf_hex_array("CHAIN RECEIVER: ", INT_64_LENGTH, context->chain_id_receiver);
+}
+
 static void handle_swap_tokens_generic(ethPluginProvideParameter_t *msg,
                                        lifi_parameters_t *context) {
     switch (context->next_param) {
-        case OFFSET:  // _swapData offset
+        case OFFSET:
             context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - sizeof(context->offset));
             context->next_param = SKIP;
             break;
@@ -57,15 +90,36 @@ static void handle_swap_tokens_generic(ethPluginProvideParameter_t *msg,
 static void handle_start_bridge_tokens_via_nxtp(ethPluginProvideParameter_t *msg,
                                                 lifi_parameters_t *context) {
     switch (context->next_param) {
-        case TOKEN_SENT:
+        case OFFSET:
+            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - sizeof(context->offset));
+            context->next_param = SKIP;
             break;
-        case TOKEN_RECEIVED:
+        case SKIP:
+            context->skip += 3;
+            context->next_param = TOKEN_SENT;
+            break;
+        case TOKEN_SENT:
+            handle_token_sent(msg, context);
+            context->skip += 2;
+            context->next_param = ADDRESS_RECEIVER;
             break;
         case ADDRESS_RECEIVER:
+            handle_address_receiver(msg, context);
+            context->next_param = CALL_TO;
             break;
-        case CHAIN_SENDER:
+        case CALL_TO:
+            handle_call_to(msg, context);
+            context->skip += 1;
+            context->next_param = CHAIN_RECEIVER;
             break;
         case CHAIN_RECEIVER:
+            handle_chain_receiver(msg, context);
+            context->skip += 2;
+            context->next_param = AMOUNT_SENT;
+            break;
+        case AMOUNT_SENT:
+            handle_amount_sent(msg, context);
+            context->next_param = NONE;
             break;
         case NONE:
             break;
@@ -84,8 +138,8 @@ void handle_provide_parameter(void *parameters) {
     msg->result = ETH_PLUGIN_RESULT_OK;
 
     if (context->skip) {
-        PRINTF("SKIPPED\n");
         // Skip this step, and don't forget to decrease skipping counter.
+        PRINTF("PARAMETER SKIPPED\n");
         context->skip--;
     } else {
         if ((context->offset) &&
@@ -95,9 +149,6 @@ void handle_provide_parameter(void *parameters) {
                    context->checkpoint,
                    msg->parameterOffset);
             return;
-        }
-        if (context->offset) {
-            PRINTF("RESET OFFSET\n");
         }
         context->offset = 0;  // Reset offset
         switch (context->selectorIndex) {

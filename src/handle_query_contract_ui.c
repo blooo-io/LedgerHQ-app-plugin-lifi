@@ -1,12 +1,20 @@
 #include "lifi_plugin.h"
 
+static const char *get_network_name(uint8_t *chain_id) {
+    for (size_t i = 0; i < NUM_LIFI_NETWORKS; i++) {
+        if (!memcmp(&LIFI_NETWORK_MAPPING[i].chain_id, chain_id, INT_64_LENGTH)) {
+            return (const char *) LIFI_NETWORK_MAPPING[i].name;
+        }
+    }
+    return "Unknown Network";
+}
+
 // Set UI for the "Send" screen.
 static void set_send_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
     switch (context->selectorIndex) {
         case SWAP_TOKENS_GENERIC:
-            strlcpy(msg->title, "Send", msg->titleLength);
-            break;
         case START_BRIDGE_TOKENS_VIA_NXTP:
+            strlcpy(msg->title, "Send", msg->titleLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -33,7 +41,6 @@ static void set_send_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
 static void set_receive_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
     switch (context->selectorIndex) {
         case SWAP_TOKENS_GENERIC:
-        case START_BRIDGE_TOKENS_VIA_NXTP:
             strlcpy(msg->title, "Receive", msg->titleLength);
             break;
         default:
@@ -57,16 +64,84 @@ static void set_receive_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context
     PRINTF("AMOUNT RECEIVED: %s\n", msg->msg);
 }
 
-// Set UI for "Warning" screen.
-static void set_warning_ui(ethQueryContractUI_t *msg,
-                           const lifi_parameters_t *context __attribute__((unused))) {
-    strlcpy(msg->title, "WARNING", msg->titleLength);
-    strlcpy(msg->msg, "Unknown token", msg->msgLength);
+// Set UI for "Warning" screen for unknown tokens.
+static void set_warning_token_ui(ethQueryContractUI_t *msg,
+                                 const lifi_parameters_t *context __attribute__((unused))) {
+    switch (context->selectorIndex) {
+        case SWAP_TOKENS_GENERIC:
+        case START_BRIDGE_TOKENS_VIA_NXTP:
+            strlcpy(msg->title, "WARNING", msg->titleLength);
+            strlcpy(msg->msg, "Unknown token", msg->msgLength);
+            break;
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            return;
+    }
 }
 
-// Helper function that returns the enum corresponding to the screen that should be displayed.
-static screens_t get_screen(ethQueryContractUI_t *msg,
-                            lifi_parameters_t *context __attribute__((unused))) {
+// Set UI for "To Network" screen.
+static void set_to_chain_ui(ethQueryContractUI_t *msg,
+                            const lifi_parameters_t *context __attribute__((unused))) {
+    uint8_t chain_id[INT_64_LENGTH];
+    switch (context->selectorIndex) {
+        case START_BRIDGE_TOKENS_VIA_NXTP:
+            memcpy(chain_id, &context->chain_id_receiver, sizeof(chain_id));
+            strlcpy(msg->title, "To network", msg->titleLength);
+            strlcpy(msg->msg, get_network_name(chain_id), msg->msgLength);
+            break;
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            return;
+    }
+}
+
+// Set UI for "To Address" screen.
+static void set_address_to_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
+    strlcpy(msg->title, "To Address", msg->titleLength);
+
+    msg->msg[0] = '0';
+    msg->msg[1] = 'x';
+
+    switch (context->selectorIndex) {
+        case START_BRIDGE_TOKENS_VIA_NXTP:
+            getEthAddressStringFromBinary((uint8_t *) context->contract_address_received,
+                                          msg->msg + 2,
+                                          msg->pluginSharedRW->sha3,
+                                          0);
+            break;
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            return;
+    }
+}
+
+// Set UI for "Executes Contract Call" screen.
+static void set_is_contract_call_screen(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
+    switch (context->selectorIndex) {
+        case START_BRIDGE_TOKENS_VIA_NXTP:
+            // Would overflow if we wrote "Executes a contract call"
+            strlcpy(msg->title, "Executes contract call", msg->titleLength);
+            if (context->has_dest_call) {
+                strlcpy(msg->msg, "Yes", msg->titleLength);
+            } else {
+                strlcpy(msg->msg, "No", msg->titleLength);
+            }
+            break;
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            return;
+    }
+}
+
+// Helper function that returns the enum corresponding to the screen that should be
+// displayed for the swapTokensGeneric selector
+static screens_t get_screen_swap_tokens_generic(ethQueryContractUI_t *msg,
+                                                lifi_parameters_t *context
+                                                __attribute__((unused))) {
     uint8_t index = msg->screenIndex;
 
     bool token_sent_found = context->tokens_found & TOKEN_SENT_FOUND;
@@ -80,11 +155,11 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
             if (both_tokens_found) {
                 return SEND_SCREEN;
             } else if (both_tokens_not_found) {
-                return WARN_SCREEN;
+                return WARN_TOKEN_SCREEN;
             } else if (token_sent_found) {
                 return SEND_SCREEN;
-            } else if (token_received_found) {
-                return WARN_SCREEN;
+            } else {
+                return WARN_TOKEN_SCREEN;
             }
         case 1:
             if (both_tokens_found) {
@@ -92,15 +167,15 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
             } else if (both_tokens_not_found) {
                 return SEND_SCREEN;
             } else if (token_sent_found) {
-                return WARN_SCREEN;
-            } else if (token_received_found) {
+                return WARN_TOKEN_SCREEN;
+            } else {
                 return SEND_SCREEN;
             }
         case 2:
             if (both_tokens_found) {
                 return ERROR;
             } else if (both_tokens_not_found) {
-                return WARN_SCREEN;
+                return WARN_TOKEN_SCREEN;
             } else {
                 return RECEIVE_SCREEN;
             }
@@ -116,6 +191,52 @@ static screens_t get_screen(ethQueryContractUI_t *msg,
     return ERROR;
 }
 
+// Helper function that returns the enum corresponding to the screen that should be
+// displayed for the startBridgeTokensViaNXTP selector
+static screens_t get_screen_start_bridge_tokens_via_nxtp(ethQueryContractUI_t *msg,
+                                                         lifi_parameters_t *context
+                                                         __attribute__((unused))) {
+    uint8_t index = msg->screenIndex;
+
+    bool token_sent_found = context->tokens_found & TOKEN_SENT_FOUND;
+
+    switch (index) {
+        case 0:
+            if (token_sent_found) {
+                return SEND_SCREEN;
+            } else {
+                return WARN_TOKEN_SCREEN;
+            }
+        case 1:
+            if (token_sent_found) {
+                return TO_CHAIN_SCREEN;
+            } else {
+                return SEND_SCREEN;
+            }
+        case 2:
+            if (token_sent_found) {
+                return TO_ADDRESS_SCREEN;
+            } else {
+                return TO_CHAIN_SCREEN;
+            }
+        case 3:
+            if (token_sent_found) {
+                return CALL_TO_SCREEN;
+            } else {
+                return TO_ADDRESS_SCREEN;
+            }
+        case 4:
+            if (token_sent_found) {
+                return ERROR;
+            } else {
+                return CALL_TO_SCREEN;
+            }
+        default:
+            return ERROR;
+    }
+    return ERROR;
+}
+
 void handle_query_contract_ui(void *parameters) {
     ethQueryContractUI_t *msg = (ethQueryContractUI_t *) parameters;
     lifi_parameters_t *context = (lifi_parameters_t *) msg->pluginContext;
@@ -123,7 +244,20 @@ void handle_query_contract_ui(void *parameters) {
     memset(msg->msg, 0, msg->msgLength);
     msg->result = ETH_PLUGIN_RESULT_OK;
 
-    screens_t screen = get_screen(msg, context);
+    screens_t screen;
+    switch (context->selectorIndex) {
+        case SWAP_TOKENS_GENERIC:
+            screen = get_screen_swap_tokens_generic(msg, context);
+            break;
+        case START_BRIDGE_TOKENS_VIA_NXTP:
+            screen = get_screen_start_bridge_tokens_via_nxtp(msg, context);
+            break;
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            return;
+    }
+
     switch (screen) {
         case SEND_SCREEN:
             set_send_ui(msg, context);
@@ -131,8 +265,17 @@ void handle_query_contract_ui(void *parameters) {
         case RECEIVE_SCREEN:
             set_receive_ui(msg, context);
             break;
-        case WARN_SCREEN:
-            set_warning_ui(msg, context);
+        case TO_CHAIN_SCREEN:
+            set_to_chain_ui(msg, context);
+            break;
+        case TO_ADDRESS_SCREEN:
+            set_address_to_ui(msg, context);
+            break;
+        case WARN_TOKEN_SCREEN:
+            set_warning_token_ui(msg, context);
+            break;
+        case CALL_TO_SCREEN:
+            set_is_contract_call_screen(msg, context);
             break;
         default:
             PRINTF("Received an invalid screenIndex\n");

@@ -38,10 +38,16 @@ void handle_init_contract(void *parameters) {
         case SWAP_TOKENS_GENERIC:
             // Skip _lifiData offset
             context->skip = 1;
+            // First param is _swapData offset
             context->next_param = OFFSET;
             break;
         case START_BRIDGE_TOKENS_VIA_NXTP:
-            context->next_param = TOKEN_SENT;
+            // Skip _lifiData offset
+            context->skip = 1;
+            // Set chain_id_receiver to 0
+            memset(context->chain_id_receiver, 0, sizeof(context->chain_id_receiver));
+            // First param is _nxtpData offset
+            context->next_param = OFFSET;
             break;
         default:
             PRINTF("Missing selectorIndex\n");
