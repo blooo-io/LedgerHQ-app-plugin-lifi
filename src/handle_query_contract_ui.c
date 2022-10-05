@@ -158,7 +158,7 @@ static screens_t get_screen_swap_tokens_generic(ethQueryContractUI_t *msg,
                 return WARN_TOKEN_SCREEN;
             } else if (token_sent_found) {
                 return SEND_SCREEN;
-            } else if (token_received_found) {
+            } else {
                 return WARN_TOKEN_SCREEN;
             }
         case 1:
@@ -168,7 +168,7 @@ static screens_t get_screen_swap_tokens_generic(ethQueryContractUI_t *msg,
                 return SEND_SCREEN;
             } else if (token_sent_found) {
                 return WARN_TOKEN_SCREEN;
-            } else if (token_received_found) {
+            } else {
                 return SEND_SCREEN;
             }
         case 2:
