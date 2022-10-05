@@ -33,9 +33,9 @@ APPNAME = "LiFi"
 
 #prepare hsm generation
 ifeq ($(TARGET_NAME), TARGET_NANOS)
-ICONNAME=icons/nanos_app_1inch.gif
+ICONNAME=icons/nanos_app_lifi.gif
 else
-ICONNAME=icons/nanox_app_1inch.gif
+ICONNAME=icons/nanox_app_lifi.gif
 endif
 
 ################
