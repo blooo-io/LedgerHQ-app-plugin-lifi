@@ -14,10 +14,10 @@ void handle_finalize(void *parameters) {
     ethPluginFinalize_t *msg = (ethPluginFinalize_t *) parameters;
     lifi_parameters_t *context = (lifi_parameters_t *) msg->pluginContext;
     if (context->valid) {
-        msg->numScreens = 2;
+        msg->numScreens = 3;
 
         if (context->selectorIndex == START_BRIDGE_TOKENS_VIA_NXTP) {
-            msg->numScreens += 2;
+            msg->numScreens += 1;
         }
 
         if (!ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {

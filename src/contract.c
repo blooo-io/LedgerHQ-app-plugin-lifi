@@ -5,8 +5,9 @@
 // You can check LI.FI swap methods here
 // https://louper.dev/diamond/0x362fA9D0bCa5D19f743Db50738345ce2b40eC99f?network=mainnet
 //
-// swapTokensGeneric 0xa4baa10c
-static const uint8_t LIFI_SWAP_TOKENS_GENERIC_SELECTOR[SELECTOR_SIZE] = {0xa4, 0xba, 0xa1, 0x0c};
+// swapTokensGeneric 0x4630a0d8
+static const uint8_t LIFI_SWAP_TOKENS_GENERIC_SELECTOR[SELECTOR_SIZE] = {0x46, 0x30, 0xa0, 0xd8};
+
 // startBridgeTokenViaNXTP 0x7d7aecd3
 static const uint8_t LIFI_START_BRIDGE_TOKEN_VIA_NXTP_SELECTOR[SELECTOR_SIZE] = {0x7d,
                                                                                  0x7a,

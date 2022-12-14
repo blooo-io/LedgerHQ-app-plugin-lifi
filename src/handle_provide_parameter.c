@@ -7,6 +7,11 @@ static void handle_amount_sent(ethPluginProvideParameter_t *msg, lifi_parameters
     printf_hex_array("AMOUNT SENT: ", INT256_LENGTH, context->amount_sent);
 }
 
+static void handle_amount_received(ethPluginProvideParameter_t *msg, lifi_parameters_t *context) {
+    memcpy(context->amount_received, msg->parameter, INT256_LENGTH);
+    printf_hex_array("AMOUNT RECEIVED: ", INT256_LENGTH, context->amount_received);
+}
+
 // Stores the address of the sent token
 static void handle_token_sent(ethPluginProvideParameter_t *msg, lifi_parameters_t *context) {
     memset(context->contract_address_sent, 0, sizeof(context->contract_address_sent));
@@ -58,6 +63,10 @@ static void handle_chain_receiver(ethPluginProvideParameter_t *msg, lifi_paramet
 static void handle_swap_tokens_generic(ethPluginProvideParameter_t *msg,
                                        lifi_parameters_t *context) {
     switch (context->next_param) {
+        case AMOUNT_RECEIVED:
+            handle_amount_received(msg, context);
+            context->next_param = OFFSET;
+            break;
         case OFFSET:
             context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - sizeof(context->offset));
             context->next_param = SKIP;

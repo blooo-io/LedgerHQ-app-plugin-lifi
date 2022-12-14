@@ -9,6 +9,15 @@ static const char *get_network_name(uint8_t *chain_id) {
     return "Unknown Network";
 }
 
+static void reverse_array(uint8_t *chain_id, uint8_t len) {
+    uint8_t temp;
+    for(uint8_t i = 0; i<len/2; i++){
+        temp = chain_id[i];
+        chain_id[i] = chain_id[len-i-1];
+        chain_id[len-i-1] = temp;
+    }
+}
+
 // Set UI for the "Send" screen.
 static void set_send_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
     switch (context->selectorIndex) {
@@ -97,6 +106,25 @@ static void set_to_chain_ui(ethQueryContractUI_t *msg,
     }
 }
 
+// Set UI for "From Network" screen.
+static void set_from_chain_ui(ethQueryContractUI_t *msg,
+                            const lifi_parameters_t *context __attribute__((unused))) {
+    uint8_t chain_id[INT_64_LENGTH];
+    switch (context->selectorIndex) {
+        case SWAP_TOKENS_GENERIC:
+            memcpy(chain_id, msg->pluginSharedRO->txContent->chainID.value, sizeof(chain_id));
+            reverse_array(chain_id, INT_64_LENGTH);
+            printf_hex_array("GUI: NETWORK",INT_64_LENGTH, chain_id);
+            strlcpy(msg->title, "From network", msg->titleLength);
+            strlcpy(msg->msg, get_network_name(chain_id), msg->msgLength);
+            break;
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            return;
+    }
+}
+
 // Set UI for "To Address" screen.
 static void set_address_to_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
     strlcpy(msg->title, "To Address", msg->titleLength);
@@ -173,15 +201,23 @@ static screens_t get_screen_swap_tokens_generic(ethQueryContractUI_t *msg,
             }
         case 2:
             if (both_tokens_found) {
-                return ERROR;
+                return FROM_CHAIN_SCREEN;
             } else if (both_tokens_not_found) {
                 return WARN_TOKEN_SCREEN;
-            } else {
+            } else if (token_sent_found) {
                 return RECEIVE_SCREEN;
             }
         case 3:
             if (both_tokens_not_found) {
                 return RECEIVE_SCREEN;
+            } else if (token_sent_found) {
+                return FROM_CHAIN_SCREEN;
+            } else {
+                return ERROR;
+            }
+        case 4:
+            if (both_tokens_not_found) {
+                return FROM_CHAIN_SCREEN;
             } else {
                 return ERROR;
             }
@@ -267,6 +303,9 @@ void handle_query_contract_ui(void *parameters) {
             break;
         case TO_CHAIN_SCREEN:
             set_to_chain_ui(msg, context);
+            break;
+        case FROM_CHAIN_SCREEN:
+            set_from_chain_ui(msg, context);
             break;
         case TO_ADDRESS_SCREEN:
             set_address_to_ui(msg, context);

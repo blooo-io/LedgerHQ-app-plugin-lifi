@@ -37,9 +37,9 @@ void handle_init_contract(void *parameters) {
     switch (context->selectorIndex) {
         case SWAP_TOKENS_GENERIC:
             // Skip _lifiData offset
-            context->skip = 1;
+            context->skip = 4;
             // First param is _swapData offset
-            context->next_param = OFFSET;
+            context->next_param = AMOUNT_RECEIVED;
             break;
         case START_BRIDGE_TOKENS_VIA_NXTP:
             // Skip _lifiData offset
