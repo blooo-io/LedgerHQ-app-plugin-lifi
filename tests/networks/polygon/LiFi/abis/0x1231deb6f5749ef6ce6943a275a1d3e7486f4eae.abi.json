@@ -894,153 +894,6 @@
 		"type": "function"
 	},
 	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "chainID",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "chainName",
-				"type": "string"
-			}
-		],
-		"name": "ChainNameRegistered",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "uint256",
-				"name": "destinationChain",
-				"type": "uint256"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "callTo",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "bytes",
-				"name": "callData",
-				"type": "bytes"
-			}
-		],
-		"name": "LifiXChainTXStarted",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "destinationChain",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "destinationAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "callTo",
-						"type": "address"
-					},
-					{
-						"internalType": "bytes",
-						"name": "callData",
-						"type": "bytes"
-					}
-				],
-				"internalType": "struct AxelarFacet.AxelarCallParameters",
-				"name": "params",
-				"type": "tuple"
-			}
-		],
-		"name": "executeCallViaAxelar",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "uint256",
-						"name": "destinationChain",
-						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "destinationAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "callTo",
-						"type": "address"
-					},
-					{
-						"internalType": "bytes",
-						"name": "callData",
-						"type": "bytes"
-					}
-				],
-				"internalType": "struct AxelarFacet.AxelarCallParameters",
-				"name": "params",
-				"type": "tuple"
-			},
-			{
-				"internalType": "address",
-				"name": "token",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			},
-			{
-				"internalType": "address",
-				"name": "recoveryAddress",
-				"type": "address"
-			}
-		],
-		"name": "executeCallWithTokenViaAxelar",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_chainId",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			}
-		],
-		"name": "setChainName",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [
 			{
 				"components": [
@@ -1247,66 +1100,80 @@
 		"type": "function"
 	},
 	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "chainID",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "chainName",
+				"type": "string"
+			}
+		],
+		"name": "ChainNameRegistered",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "destinationChain",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "callTo",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "bytes",
+				"name": "callData",
+				"type": "bytes"
+			}
+		],
+		"name": "LifiXChainTXStarted",
+		"type": "event"
+	},
+	{
 		"inputs": [
 			{
 				"components": [
 					{
-						"internalType": "bytes32",
-						"name": "transactionId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "string",
-						"name": "bridge",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "integrator",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "referrer",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "sendingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "receiver",
-						"type": "address"
-					},
-					{
 						"internalType": "uint256",
-						"name": "minAmount",
+						"name": "destinationChain",
 						"type": "uint256"
 					},
 					{
-						"internalType": "uint256",
-						"name": "destinationChainId",
-						"type": "uint256"
+						"internalType": "address",
+						"name": "destinationAddress",
+						"type": "address"
 					},
 					{
-						"internalType": "bool",
-						"name": "hasSourceSwaps",
-						"type": "bool"
+						"internalType": "address",
+						"name": "callTo",
+						"type": "address"
 					},
 					{
-						"internalType": "bool",
-						"name": "hasDestinationCall",
-						"type": "bool"
+						"internalType": "bytes",
+						"name": "callData",
+						"type": "bytes"
 					}
 				],
-				"internalType": "struct ILiFi.BridgeData",
-				"name": "_bridgeData",
+				"internalType": "struct AxelarFacet.AxelarCallParameters",
+				"name": "params",
 				"type": "tuple"
 			}
 		],
-		"name": "startBridgeTokensViaXDaiBridge",
+		"name": "executeCallViaAxelar",
 		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
@@ -1316,59 +1183,144 @@
 			{
 				"components": [
 					{
-						"internalType": "bytes32",
-						"name": "transactionId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "string",
-						"name": "bridge",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "integrator",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "referrer",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "sendingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "receiver",
-						"type": "address"
-					},
-					{
 						"internalType": "uint256",
-						"name": "minAmount",
+						"name": "destinationChain",
 						"type": "uint256"
 					},
 					{
-						"internalType": "uint256",
-						"name": "destinationChainId",
-						"type": "uint256"
+						"internalType": "address",
+						"name": "destinationAddress",
+						"type": "address"
 					},
 					{
-						"internalType": "bool",
-						"name": "hasSourceSwaps",
-						"type": "bool"
+						"internalType": "address",
+						"name": "callTo",
+						"type": "address"
 					},
 					{
-						"internalType": "bool",
-						"name": "hasDestinationCall",
-						"type": "bool"
+						"internalType": "bytes",
+						"name": "callData",
+						"type": "bytes"
 					}
 				],
-				"internalType": "struct ILiFi.BridgeData",
-				"name": "_bridgeData",
+				"internalType": "struct AxelarFacet.AxelarCallParameters",
+				"name": "params",
 				"type": "tuple"
+			},
+			{
+				"internalType": "address",
+				"name": "token",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "recoveryAddress",
+				"type": "address"
+			}
+		],
+		"name": "executeCallWithTokenViaAxelar",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_chainId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			}
+		],
+		"name": "setChainName",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "bytes32",
+				"name": "transactionId",
+				"type": "bytes32"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "integrator",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "referrer",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "fromAssetId",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "toAssetId",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "fromAmount",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "toAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "LiFiSwappedGeneric",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "_transactionId",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "_integrator",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_referrer",
+				"type": "string"
+			},
+			{
+				"internalType": "address payable",
+				"name": "_receiver",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_minAmount",
+				"type": "uint256"
 			},
 			{
 				"components": [
@@ -1413,7 +1365,7 @@
 				"type": "tuple[]"
 			}
 		],
-		"name": "swapAndStartBridgeTokensViaXDaiBridge",
+		"name": "swapTokensGeneric",
 		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
@@ -2526,625 +2478,59 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "bytes32",
-						"name": "transactionId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "string",
-						"name": "bridge",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "integrator",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "referrer",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "sendingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "receiver",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "minAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "destinationChainId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasSourceSwaps",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasDestinationCall",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct ILiFi.BridgeData",
-				"name": "_bridgeData",
-				"type": "tuple"
-			}
-		],
-		"name": "startBridgeTokensViaOmniBridge",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "bytes32",
-						"name": "transactionId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "string",
-						"name": "bridge",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "integrator",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "referrer",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "sendingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "receiver",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "minAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "destinationChainId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasSourceSwaps",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasDestinationCall",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct ILiFi.BridgeData",
-				"name": "_bridgeData",
-				"type": "tuple"
-			},
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "callTo",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "approveTo",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "sendingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "receivingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "fromAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bytes",
-						"name": "callData",
-						"type": "bytes"
-					},
-					{
-						"internalType": "bool",
-						"name": "requiresDeposit",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct LibSwap.SwapData[]",
-				"name": "_swapData",
-				"type": "tuple[]"
-			}
-		],
-		"name": "swapAndStartBridgeTokensViaOmniBridge",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
 		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "assetId",
-				"type": "address"
+				"indexed": false,
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
 			},
 			{
 				"indexed": false,
 				"internalType": "address",
-				"name": "bridge",
+				"name": "contractAddress",
 				"type": "address"
 			}
 		],
-		"name": "OptimismBridgeRegistered",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "assetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "bridge",
-						"type": "address"
-					}
-				],
-				"indexed": false,
-				"internalType": "struct OptimismBridgeFacet.Config[]",
-				"name": "configs",
-				"type": "tuple[]"
-			}
-		],
-		"name": "OptimismInitialized",
+		"name": "PeripheryContractRegistered",
 		"type": "event"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "assetId",
-				"type": "address"
-			},
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			}
+		],
+		"name": "getPeripheryContract",
+		"outputs": [
 			{
 				"internalType": "address",
-				"name": "bridge",
+				"name": "",
 				"type": "address"
 			}
 		],
-		"name": "registerOptimismBridge",
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "_contractAddress",
+				"type": "address"
+			}
+		],
+		"name": "registerPeripheryContract",
 		"outputs": [],
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "bytes32",
-						"name": "transactionId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "string",
-						"name": "bridge",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "integrator",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "referrer",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "sendingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "receiver",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "minAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "destinationChainId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasSourceSwaps",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasDestinationCall",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct ILiFi.BridgeData",
-				"name": "_bridgeData",
-				"type": "tuple"
-			},
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "assetIdOnL2",
-						"type": "address"
-					},
-					{
-						"internalType": "uint32",
-						"name": "l2Gas",
-						"type": "uint32"
-					},
-					{
-						"internalType": "bool",
-						"name": "isSynthetix",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct OptimismBridgeFacet.OptimismData",
-				"name": "_optimismData",
-				"type": "tuple"
-			}
-		],
-		"name": "startBridgeTokensViaOptimismBridge",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "bytes32",
-						"name": "transactionId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "string",
-						"name": "bridge",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "integrator",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "referrer",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "sendingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "receiver",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "minAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "destinationChainId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasSourceSwaps",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasDestinationCall",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct ILiFi.BridgeData",
-				"name": "_bridgeData",
-				"type": "tuple"
-			},
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "callTo",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "approveTo",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "sendingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "receivingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "fromAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bytes",
-						"name": "callData",
-						"type": "bytes"
-					},
-					{
-						"internalType": "bool",
-						"name": "requiresDeposit",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct LibSwap.SwapData[]",
-				"name": "_swapData",
-				"type": "tuple[]"
-			},
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "assetIdOnL2",
-						"type": "address"
-					},
-					{
-						"internalType": "uint32",
-						"name": "l2Gas",
-						"type": "uint32"
-					},
-					{
-						"internalType": "bool",
-						"name": "isSynthetix",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct OptimismBridgeFacet.OptimismData",
-				"name": "_optimismData",
-				"type": "tuple"
-			}
-		],
-		"name": "swapAndStartBridgeTokensViaOptimismBridge",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "bytes32",
-						"name": "transactionId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "string",
-						"name": "bridge",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "integrator",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "referrer",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "sendingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "receiver",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "minAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "destinationChainId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasSourceSwaps",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasDestinationCall",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct ILiFi.BridgeData",
-				"name": "_bridgeData",
-				"type": "tuple"
-			}
-		],
-		"name": "startBridgeTokensViaPolygonBridge",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "bytes32",
-						"name": "transactionId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "string",
-						"name": "bridge",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "integrator",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "referrer",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "sendingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "receiver",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "minAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "destinationChainId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasSourceSwaps",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasDestinationCall",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct ILiFi.BridgeData",
-				"name": "_bridgeData",
-				"type": "tuple"
-			},
-			{
-				"components": [
-					{
-						"internalType": "address",
-						"name": "callTo",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "approveTo",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "sendingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "receivingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "fromAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bytes",
-						"name": "callData",
-						"type": "bytes"
-					},
-					{
-						"internalType": "bool",
-						"name": "requiresDeposit",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct LibSwap.SwapData[]",
-				"name": "_swapData",
-				"type": "tuple[]"
-			}
-		],
-		"name": "swapAndStartBridgeTokensViaPolygonBridge",
-		"outputs": [],
-		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -3587,59 +2973,269 @@
 		"type": "function"
 	},
 	{
-		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
+				"components": [
+					{
+						"internalType": "bytes32",
+						"name": "transactionId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "string",
+						"name": "bridge",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "integrator",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "referrer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "sendingAssetId",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "receiver",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "minAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "destinationChainId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "hasSourceSwaps",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "hasDestinationCall",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct ILiFi.BridgeData",
+				"name": "_bridgeData",
+				"type": "tuple"
 			},
 			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "contractAddress",
-				"type": "address"
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "permit",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bool",
+						"name": "useAssetFee",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "nativeFee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint32",
+						"name": "referralCode",
+						"type": "uint32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "executionFee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "flags",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "fallbackAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "data",
+						"type": "bytes"
+					}
+				],
+				"internalType": "struct DeBridgeFacet.DeBridgeData",
+				"name": "_deBridgeData",
+				"type": "tuple"
 			}
 		],
-		"name": "PeripheryContractRegistered",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			}
-		],
-		"name": "getPeripheryContract",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
+		"name": "startBridgeTokensViaDeBridge",
+		"outputs": [],
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
+				"components": [
+					{
+						"internalType": "bytes32",
+						"name": "transactionId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "string",
+						"name": "bridge",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "integrator",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "referrer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "sendingAssetId",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "receiver",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "minAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "destinationChainId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "hasSourceSwaps",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "hasDestinationCall",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct ILiFi.BridgeData",
+				"name": "_bridgeData",
+				"type": "tuple"
 			},
 			{
-				"internalType": "address",
-				"name": "_contractAddress",
-				"type": "address"
+				"components": [
+					{
+						"internalType": "address",
+						"name": "callTo",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "approveTo",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "sendingAssetId",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "receivingAssetId",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "fromAmount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes",
+						"name": "callData",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bool",
+						"name": "requiresDeposit",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct LibSwap.SwapData[]",
+				"name": "_swapData",
+				"type": "tuple[]"
+			},
+			{
+				"components": [
+					{
+						"internalType": "bytes",
+						"name": "permit",
+						"type": "bytes"
+					},
+					{
+						"internalType": "bool",
+						"name": "useAssetFee",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "nativeFee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint32",
+						"name": "referralCode",
+						"type": "uint32"
+					},
+					{
+						"internalType": "uint256",
+						"name": "executionFee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "flags",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "fallbackAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes",
+						"name": "data",
+						"type": "bytes"
+					}
+				],
+				"internalType": "struct DeBridgeFacet.DeBridgeData",
+				"name": "_deBridgeData",
+				"type": "tuple"
 			}
 		],
-		"name": "registerPeripheryContract",
+		"name": "swapAndStartBridgeTokensViaDeBridge",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -3647,87 +3243,160 @@
 		"inputs": [
 			{
 				"indexed": true,
-				"internalType": "bytes32",
-				"name": "transactionId",
-				"type": "bytes32"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "integrator",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "referrer",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "fromAssetId",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "toAssetId",
-				"type": "address"
-			},
-			{
-				"indexed": false,
 				"internalType": "uint256",
-				"name": "fromAmount",
+				"name": "lifiChainId",
 				"type": "uint256"
 			},
 			{
-				"indexed": false,
+				"indexed": true,
 				"internalType": "uint256",
-				"name": "toAmount",
+				"name": "wormholeChainId",
 				"type": "uint256"
 			}
 		],
-		"name": "LiFiSwappedGeneric",
+		"name": "WormholeChainIdMapped",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "chainId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint16",
+						"name": "wormholeChainId",
+						"type": "uint16"
+					}
+				],
+				"indexed": false,
+				"internalType": "struct WormholeFacet.Config[]",
+				"name": "configs",
+				"type": "tuple[]"
+			}
+		],
+		"name": "WormholeChainIdsMapped",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "chainId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint16",
+						"name": "wormholeChainId",
+						"type": "uint16"
+					}
+				],
+				"indexed": false,
+				"internalType": "struct WormholeFacet.Config[]",
+				"name": "configs",
+				"type": "tuple[]"
+			}
+		],
+		"name": "WormholeInitialized",
 		"type": "event"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "bytes32",
-				"name": "_transactionId",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "string",
-				"name": "_integrator",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_referrer",
-				"type": "string"
-			},
-			{
-				"internalType": "address payable",
-				"name": "_receiver",
-				"type": "address"
-			},
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "chainId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint16",
+						"name": "wormholeChainId",
+						"type": "uint16"
+					}
+				],
+				"internalType": "struct WormholeFacet.Config[]",
+				"name": "configs",
+				"type": "tuple[]"
+			}
+		],
+		"name": "initWormhole",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_minAmount",
+				"name": "_lifiChainId",
 				"type": "uint256"
 			},
 			{
+				"internalType": "uint16",
+				"name": "_wormholeChainId",
+				"type": "uint16"
+			}
+		],
+		"name": "setWormholeChainId",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"components": [
 					{
-						"internalType": "address",
-						"name": "callTo",
-						"type": "address"
+						"internalType": "uint256",
+						"name": "chainId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint16",
+						"name": "wormholeChainId",
+						"type": "uint16"
+					}
+				],
+				"internalType": "struct WormholeFacet.Config[]",
+				"name": "configs",
+				"type": "tuple[]"
+			}
+		],
+		"name": "setWormholeChainIds",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"components": [
+					{
+						"internalType": "bytes32",
+						"name": "transactionId",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "string",
+						"name": "bridge",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "integrator",
+						"type": "string"
 					},
 					{
 						"internalType": "address",
-						"name": "approveTo",
+						"name": "referrer",
 						"type": "address"
 					},
 					{
@@ -3737,31 +3406,53 @@
 					},
 					{
 						"internalType": "address",
-						"name": "receivingAssetId",
+						"name": "receiver",
 						"type": "address"
 					},
 					{
 						"internalType": "uint256",
-						"name": "fromAmount",
+						"name": "minAmount",
 						"type": "uint256"
 					},
 					{
-						"internalType": "bytes",
-						"name": "callData",
-						"type": "bytes"
+						"internalType": "uint256",
+						"name": "destinationChainId",
+						"type": "uint256"
 					},
 					{
 						"internalType": "bool",
-						"name": "requiresDeposit",
+						"name": "hasSourceSwaps",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "hasDestinationCall",
 						"type": "bool"
 					}
 				],
-				"internalType": "struct LibSwap.SwapData[]",
-				"name": "_swapData",
-				"type": "tuple[]"
+				"internalType": "struct ILiFi.BridgeData",
+				"name": "_bridgeData",
+				"type": "tuple"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "arbiterFee",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint32",
+						"name": "nonce",
+						"type": "uint32"
+					}
+				],
+				"internalType": "struct WormholeFacet.WormholeData",
+				"name": "_wormholeData",
+				"type": "tuple"
 			}
 		],
-		"name": "swapTokensGeneric",
+		"name": "startBridgeTokensViaWormhole",
 		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
@@ -3828,93 +3519,6 @@
 			{
 				"components": [
 					{
-						"internalType": "uint256",
-						"name": "maxSubmissionCost",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "maxGas",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "maxGasPrice",
-						"type": "uint256"
-					}
-				],
-				"internalType": "struct ArbitrumBridgeFacet.ArbitrumData",
-				"name": "_arbitrumData",
-				"type": "tuple"
-			}
-		],
-		"name": "startBridgeTokensViaArbitrumBridge",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"components": [
-					{
-						"internalType": "bytes32",
-						"name": "transactionId",
-						"type": "bytes32"
-					},
-					{
-						"internalType": "string",
-						"name": "bridge",
-						"type": "string"
-					},
-					{
-						"internalType": "string",
-						"name": "integrator",
-						"type": "string"
-					},
-					{
-						"internalType": "address",
-						"name": "referrer",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "sendingAssetId",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "receiver",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "minAmount",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "destinationChainId",
-						"type": "uint256"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasSourceSwaps",
-						"type": "bool"
-					},
-					{
-						"internalType": "bool",
-						"name": "hasDestinationCall",
-						"type": "bool"
-					}
-				],
-				"internalType": "struct ILiFi.BridgeData",
-				"name": "_bridgeData",
-				"type": "tuple"
-			},
-			{
-				"components": [
-					{
 						"internalType": "address",
 						"name": "callTo",
 						"type": "address"
@@ -3958,26 +3562,21 @@
 				"components": [
 					{
 						"internalType": "uint256",
-						"name": "maxSubmissionCost",
+						"name": "arbiterFee",
 						"type": "uint256"
 					},
 					{
-						"internalType": "uint256",
-						"name": "maxGas",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "maxGasPrice",
-						"type": "uint256"
+						"internalType": "uint32",
+						"name": "nonce",
+						"type": "uint32"
 					}
 				],
-				"internalType": "struct ArbitrumBridgeFacet.ArbitrumData",
-				"name": "_arbitrumData",
+				"internalType": "struct WormholeFacet.WormholeData",
+				"name": "_wormholeData",
 				"type": "tuple"
 			}
 		],
-		"name": "swapAndStartBridgeTokensViaArbitrumBridge",
+		"name": "swapAndStartBridgeTokensViaWormhole",
 		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
