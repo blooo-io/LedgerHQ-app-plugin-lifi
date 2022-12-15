@@ -12,7 +12,7 @@
 #define NUM_LIFI_SELECTORS 2
 #define SELECTOR_SIZE      4
 
-#define NUM_LIFI_NETWORKS         3
+#define NUM_LIFI_NETWORKS         14
 #define LIFI_MAX_NETWORK_NAME_LEN 40
 
 #define PLUGIN_NAME "LiFi"
