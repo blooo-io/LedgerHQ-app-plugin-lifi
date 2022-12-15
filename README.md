@@ -30,9 +30,9 @@ Smart contracts covered by this plugin are:
 
 | Network  | Smart Contract |
 |   ---    | --- |
-| Ethereum | `0x362fa9d0bca5d19f743db50738345ce2b40ec99f`|
-| Polygon  | `0x362fa9d0bca5d19f743db50738345ce2b40ec99f`|
-| BSC      | `0x362fa9d0bca5d19f743db50738345ce2b40ec99f`|
+| Ethereum | `0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae`|
+| Polygon  | `0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae`|
+| BSC      | `0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae`|
 
 
 ## Build
