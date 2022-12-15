@@ -8,11 +8,11 @@
 // swapTokensGeneric 0x4630a0d8
 static const uint8_t LIFI_SWAP_TOKENS_GENERIC_SELECTOR[SELECTOR_SIZE] = {0x46, 0x30, 0xa0, 0xd8};
 
-// startBridgeTokenViaNXTP 0x7d7aecd3
-static const uint8_t LIFI_START_BRIDGE_TOKEN_VIA_NXTP_SELECTOR[SELECTOR_SIZE] = {0x7d,
-                                                                                 0x7a,
-                                                                                 0xec,
-                                                                                 0xd3};
+// startBridgeTokenViaNXTP 0xc9fb76b1
+static const uint8_t LIFI_START_BRIDGE_TOKEN_VIA_NXTP_SELECTOR[SELECTOR_SIZE] = {0xc9,
+                                                                                 0xfb,
+                                                                                 0x76,
+                                                                                 0xb1};
 
 // Array of all the different LI.FI selectors.
 const uint8_t *const LIFI_SELECTORS[NUM_LIFI_SELECTORS] = {

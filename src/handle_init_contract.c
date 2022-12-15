@@ -42,8 +42,6 @@ void handle_init_contract(void *parameters) {
             context->next_param = AMOUNT_RECEIVED;
             break;
         case START_BRIDGE_TOKENS_VIA_NXTP:
-            // Skip _lifiData offset
-            context->skip = 1;
             // Set chain_id_receiver to 0
             memset(context->chain_id_receiver, 0, sizeof(context->chain_id_receiver));
             // First param is _nxtpData offset

@@ -112,9 +112,9 @@ static void set_from_chain_ui(ethQueryContractUI_t *msg,
     uint8_t chain_id[INT_64_LENGTH];
     switch (context->selectorIndex) {
         case SWAP_TOKENS_GENERIC:
+        case START_BRIDGE_TOKENS_VIA_NXTP:
             memcpy(chain_id, msg->pluginSharedRO->txContent->chainID.value, sizeof(chain_id));
             reverse_array(chain_id, INT_64_LENGTH);
-            printf_hex_array("GUI: NETWORK",INT_64_LENGTH, chain_id);
             strlcpy(msg->title, "From network", msg->titleLength);
             strlcpy(msg->msg, get_network_name(chain_id), msg->msgLength);
             break;
@@ -245,23 +245,29 @@ static screens_t get_screen_start_bridge_tokens_via_nxtp(ethQueryContractUI_t *m
             }
         case 1:
             if (token_sent_found) {
-                return TO_CHAIN_SCREEN;
+                return FROM_CHAIN_SCREEN;
             } else {
                 return SEND_SCREEN;
             }
         case 2:
             if (token_sent_found) {
+                return TO_CHAIN_SCREEN;
+            } else {
+                return FROM_CHAIN_SCREEN;
+            }
+        case 3:
+            if (token_sent_found) {
                 return TO_ADDRESS_SCREEN;
             } else {
                 return TO_CHAIN_SCREEN;
             }
-        case 3:
+        case 4:
             if (token_sent_found) {
                 return CALL_TO_SCREEN;
             } else {
                 return TO_ADDRESS_SCREEN;
             }
-        case 4:
+        case 5:
             if (token_sent_found) {
                 return ERROR;
             } else {

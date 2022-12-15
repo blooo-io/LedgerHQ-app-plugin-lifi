@@ -17,7 +17,7 @@ void handle_finalize(void *parameters) {
         msg->numScreens = 3;
 
         if (context->selectorIndex == START_BRIDGE_TOKENS_VIA_NXTP) {
-            msg->numScreens += 1;
+            msg->numScreens += 2;
         }
 
         if (!ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {

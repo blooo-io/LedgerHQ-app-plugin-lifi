@@ -109,25 +109,23 @@ static void handle_start_bridge_tokens_via_nxtp(ethPluginProvideParameter_t *msg
             break;
         case TOKEN_SENT:
             handle_token_sent(msg, context);
-            context->skip += 2;
             context->next_param = ADDRESS_RECEIVER;
             break;
         case ADDRESS_RECEIVER:
             handle_address_receiver(msg, context);
-            context->next_param = CALL_TO;
-            break;
-        case CALL_TO:
-            handle_call_to(msg, context);
-            context->skip += 1;
-            context->next_param = CHAIN_RECEIVER;
-            break;
-        case CHAIN_RECEIVER:
-            handle_chain_receiver(msg, context);
-            context->skip += 2;
             context->next_param = AMOUNT_SENT;
             break;
         case AMOUNT_SENT:
             handle_amount_sent(msg, context);
+            context->next_param = CHAIN_RECEIVER;
+            break;
+        case CHAIN_RECEIVER:
+            handle_chain_receiver(msg, context);
+            context->skip += 1;
+            context->next_param = CALL_TO;
+            break;
+        case CALL_TO:
+            handle_call_to(msg, context);
             context->next_param = NONE;
             break;
         case NONE:
