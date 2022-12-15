@@ -12,7 +12,7 @@
 #define NUM_LIFI_SELECTORS 2
 #define SELECTOR_SIZE      4
 
-#define NUM_LIFI_NETWORKS         3
+#define NUM_LIFI_NETWORKS         14
 #define LIFI_MAX_NETWORK_NAME_LEN 40
 
 #define PLUGIN_NAME "LiFi"
@@ -40,6 +40,7 @@ typedef enum {
     SEND_SCREEN,
     RECEIVE_SCREEN,
     TO_CHAIN_SCREEN,
+    FROM_CHAIN_SCREEN,
     TO_ADDRESS_SCREEN,
     WARN_TOKEN_SCREEN,
     CALL_TO_SCREEN,
