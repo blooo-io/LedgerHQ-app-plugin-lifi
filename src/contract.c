@@ -59,7 +59,7 @@ const lifi_network_info_t LIFI_NETWORK_MAPPING[NUM_LIFI_NETWORKS] = {{{0x00,
                                                                        0x00,
                                                                        0x01},  // 1
                                                                       "Ethereum"},
-                                                                      {{0x00,
+                                                                     {{0x00,
                                                                        0x00,
                                                                        0x00,
                                                                        0x00,

@@ -11,10 +11,10 @@ static const char *get_network_name(uint8_t *chain_id) {
 
 static void reverse_array(uint8_t *chain_id, uint8_t len) {
     uint8_t temp;
-    for(uint8_t i = 0; i<len/2; i++){
+    for (uint8_t i = 0; i < len / 2; i++) {
         temp = chain_id[i];
-        chain_id[i] = chain_id[len-i-1];
-        chain_id[len-i-1] = temp;
+        chain_id[i] = chain_id[len - i - 1];
+        chain_id[len - i - 1] = temp;
     }
 }
 
@@ -108,7 +108,7 @@ static void set_to_chain_ui(ethQueryContractUI_t *msg,
 
 // Set UI for "From Network" screen.
 static void set_from_chain_ui(ethQueryContractUI_t *msg,
-                            const lifi_parameters_t *context __attribute__((unused))) {
+                              const lifi_parameters_t *context __attribute__((unused))) {
     uint8_t chain_id[INT_64_LENGTH];
     switch (context->selectorIndex) {
         case SWAP_TOKENS_GENERIC:
@@ -323,7 +323,7 @@ void handle_query_contract_ui(void *parameters) {
             set_is_contract_call_screen(msg, context);
             break;
         default:
-            PRINTF("Received an invalid screenIndex\n");
+            PRINTF("Received an invalid screenIndex %d\n", screen);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             return;
     }
