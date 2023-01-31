@@ -9,15 +9,6 @@ static const char *get_network_name(uint8_t *chain_id) {
     return "Unknown Network";
 }
 
-static void reverse_array(uint8_t *chain_id, uint8_t len) {
-    uint8_t temp;
-    for (uint8_t i = 0; i < len / 2; i++) {
-        temp = chain_id[i];
-        chain_id[i] = chain_id[len - i - 1];
-        chain_id[len - i - 1] = temp;
-    }
-}
-
 // Set UI for the "Send" screen.
 static void set_send_ui(ethQueryContractUI_t *msg, lifi_parameters_t *context) {
     switch (context->selectorIndex) {
