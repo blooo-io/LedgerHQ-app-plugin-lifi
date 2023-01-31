@@ -4,11 +4,12 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - dev
-      - master
+      - develop
+      - main
   pull_request:
     branches:
-      - master
+      - develop
+      - main
 
 jobs:
   job_build_debug:
