@@ -114,7 +114,9 @@ static void set_from_chain_ui(ethQueryContractUI_t *msg,
         case START_BRIDGE_TOKENS_VIA_NXTP:
             strlcpy(msg->title, "From network", msg->titleLength);
             for (size_t i = 0; i < NUM_LEDGER_SUPPORTED_NETWORK; i++) {
-                if (!memcmp(msg->network_ticker, LEDGER_SUPPORTED_NETWORK[i].network_ticker, MAX_TICKER_LEN)) {
+                if (!memcmp(msg->network_ticker,
+                            LEDGER_SUPPORTED_NETWORK[i].network_ticker,
+                            MAX_TICKER_LEN)) {
                     strlcpy(msg->msg, LEDGER_SUPPORTED_NETWORK[i].name, msg->msgLength);
                     return;
                 }
