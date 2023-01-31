@@ -4,12 +4,11 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
-      - develop
+      - dev
+      - master
   pull_request:
     branches:
-      - main
-      - develop
+      - master
 
 jobs:
   job_build_debug:
@@ -92,9 +91,15 @@ jobs:
       image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:latest
     steps:
       - name: Clone
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
+      - name: Clone SDK
+        uses: actions/checkout@v3
+        with:
+          repository: LedgerHQ/ethereum-plugin-sdk
+          path: ethereum-plugin-sdk
+          ref: develop
       - name: Build plugin for Nano S
         run: |
           make clean
@@ -104,7 +109,7 @@ jobs:
           mkdir -p ./tests/elfs/
           mv bin/app.elf ./tests/elfs/lifi_nanos.elf
       - name: Upload plugin binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: binaries
           path: tests/elfs/lifi_nanos.elf
@@ -116,9 +121,15 @@ jobs:
       image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:latest
     steps:
       - name: Clone
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
+      - name: Clone SDK
+        uses: actions/checkout@v3
+        with:
+          repository: LedgerHQ/ethereum-plugin-sdk
+          path: ethereum-plugin-sdk
+          ref: develop
       - name: Build plugin for Nano X
         run: |
           make clean
@@ -128,7 +139,7 @@ jobs:
           mkdir -p ./tests/elfs/
           mv bin/app.elf ./tests/elfs/lifi_nanox.elf
       - name: Upload plugin binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: binaries
           path: tests/elfs/lifi_nanox.elf
@@ -140,9 +151,15 @@ jobs:
       image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:latest
     steps:
       - name: Clone
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
+      - name: Clone SDK
+        uses: actions/checkout@v3
+        with:
+          repository: LedgerHQ/ethereum-plugin-sdk
+          path: ethereum-plugin-sdk
+          ref: develop
       - name: Build plugin for Nano S+
         run: |
           make clean
@@ -152,7 +169,7 @@ jobs:
           mkdir -p ./tests/elfs/
           mv bin/app.elf ./tests/elfs/lifi_nanosp.elf
       - name: Upload plugin binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: binaries
           path: tests/elfs/lifi_nanosp.elf
@@ -164,10 +181,10 @@ jobs:
       image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:latest
     steps:
       - name: Checkout app-ethereum
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: LedgerHQ/app-ethereum
-          ref: ${{ ((github.base_ref || github.ref_name) == 'main' && 'master') || (github.base_ref || github.ref_name) }}
+          ref: develop
           submodules: recursive
       - name: Build ethereum
         run: |
@@ -179,7 +196,7 @@ jobs:
           mkdir -p ./tests/elfs/
           mv bin/app.elf ./tests/elfs/ethereum_nanos.elf
       - name: Upload plugin binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: binaries
           path: tests/elfs/ethereum_nanos.elf
@@ -191,10 +208,10 @@ jobs:
       image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:latest
     steps:
       - name: Checkout app-ethereum
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: LedgerHQ/app-ethereum
-          ref: ${{ ((github.base_ref || github.ref_name) == 'main' && 'master') || (github.base_ref || github.ref_name) }}
+          ref: develop
           submodules: recursive
       - name: Build ethereum
         run: |
@@ -206,7 +223,7 @@ jobs:
           mkdir -p ./tests/elfs/
           mv bin/app.elf ./tests/elfs/ethereum_nanox.elf
       - name: Upload plugin binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: binaries
           path: tests/elfs/ethereum_nanox.elf
@@ -218,10 +235,10 @@ jobs:
       image: ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:latest
     steps:
       - name: Checkout app-ethereum
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: LedgerHQ/app-ethereum
-          ref: ${{ ((github.base_ref || github.ref_name) == 'main' && 'master') || (github.base_ref || github.ref_name) }}
+          ref: develop
           submodules: recursive
       - name: Build ethereum
         run: |
@@ -233,7 +250,7 @@ jobs:
           mkdir -p ./tests/elfs/
           mv bin/app.elf ./tests/elfs/ethereum_nanosp.elf
       - name: Upload plugin binary
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: binaries
           path: tests/elfs/ethereum_nanosp.elf
@@ -254,9 +271,9 @@ jobs:
           echo $HOME
           echo $DISPLAY
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download built binaries
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: binaries
           path: tests/elfs/
@@ -264,9 +281,9 @@ jobs:
         run: ls -lh ./tests/elfs
       - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
       - name: Install node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: "16.4.0"
+          node-version: "14.18.1"
       - name: Install yarn
         run: |
           npm install -g yarn
