@@ -109,14 +109,17 @@ static void set_to_chain_ui(ethQueryContractUI_t *msg,
 // Set UI for "From Network" screen.
 static void set_from_chain_ui(ethQueryContractUI_t *msg,
                               const lifi_parameters_t *context __attribute__((unused))) {
-    uint8_t chain_id[INT_64_LENGTH];
     switch (context->selectorIndex) {
         case SWAP_TOKENS_GENERIC:
         case START_BRIDGE_TOKENS_VIA_NXTP:
-            memcpy(chain_id, msg->pluginSharedRO->txContent->chainID.value, sizeof(chain_id));
-            reverse_array(chain_id, INT_64_LENGTH);
             strlcpy(msg->title, "From network", msg->titleLength);
-            strlcpy(msg->msg, get_network_name(chain_id), msg->msgLength);
+            for (size_t i = 0; i < NUM_LEDGER_SUPPORTED_NETWORK; i++) {
+                if (!memcmp(msg->network_ticker, LEDGER_SUPPORTED_NETWORK[i].network_ticker, MAX_TICKER_LEN)) {
+                    strlcpy(msg->msg, LEDGER_SUPPORTED_NETWORK[i].name, msg->msgLength);
+                    return;
+                }
+            }
+            strlcpy(msg->msg, "Unknown Network", msg->msgLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);

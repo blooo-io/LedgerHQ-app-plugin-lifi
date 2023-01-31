@@ -42,6 +42,12 @@ const uint8_t NULL_CHAIN_ID[INT_64_LENGTH] = {0x00,
                                               0x00,
                                               0x00};
 
+const ledger_network_info_t LEDGER_SUPPORTED_NETWORK[NUM_LEDGER_SUPPORTED_NETWORK] = {
+    {"ETH", "Ethereum"},
+    {"BNB", "BSC"},
+    {"MATIC", "Polygon"},
+};
+
 const lifi_network_info_t LIFI_NETWORK_MAPPING[NUM_LIFI_NETWORKS] = {{{0x00,
                                                                        0x00,
                                                                        0x00,
