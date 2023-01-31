@@ -44,7 +44,7 @@ cd -
 cp "${APP_ETHEREUM}/bin/app.elf" "tests/elfs/ethereum_nanox.elf"
 
 
-echo "*Building elfs for Nano X..."
+echo "*Building elfs for Nano S+..."
 export BOLOS_SDK="$NANOSP_SDK"
 
 echo "**Building app-LiFi for Nano S+..."

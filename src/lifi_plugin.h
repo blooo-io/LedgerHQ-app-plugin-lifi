@@ -15,6 +15,9 @@
 #define NUM_LIFI_NETWORKS         14
 #define LIFI_MAX_NETWORK_NAME_LEN 40
 
+#define NUM_LEDGER_SUPPORTED_NETWORK 3
+#define LEDGER_MAX_NETWORK_NAME_LEN  19
+
 #define PLUGIN_NAME "LiFi"
 
 #define TOKEN_SENT_FOUND     1
@@ -73,6 +76,14 @@ typedef struct lifi_network_info_s {
 
 // Hardcoded chain IDs to display the involved networks in the bridge methods
 extern const lifi_network_info_t LIFI_NETWORK_MAPPING[NUM_LIFI_NETWORKS];
+
+typedef struct ledger_network_info_s {
+    char network_ticker[MAX_TICKER_LEN];
+    char name[LEDGER_MAX_NETWORK_NAME_LEN];
+} ledger_network_info_t;
+
+// Hardcoded chain ticker and network name to display the involved networks in the bridge methods
+extern const ledger_network_info_t LEDGER_SUPPORTED_NETWORK[NUM_LEDGER_SUPPORTED_NETWORK];
 
 // This will be compared to chain_id_receiver in context
 extern const uint8_t NULL_CHAIN_ID[INT_64_LENGTH];

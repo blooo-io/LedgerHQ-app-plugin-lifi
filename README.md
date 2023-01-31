@@ -56,6 +56,27 @@ To test the plugin go to the tests folder from the "LedgerHQ-app-plugin-lifi" an
 cd LedgerHQ-app-plugin-lifi/tests  # go to the tests folder in LedgerHQ-app-plugin-lifi
 yarn test                          # run the script test
 ```
+
+## Load
+
+```shell
+#Clone the ledger-app-builder repo
+git clone https://github.com/LedgerHQ/ledger-app-builder
+
+cd ledger-app-builder
+
+sudo docker build -t ledger-app-builder:latest .
+
+cd ../LedgerHQ-app-plugin-lifi
+
+sudo docker run --rm -ti -v "$(realpath .):/app" --privileged ledger-app-builder:latest
+```
+Then inside the image build load the LIFI plugin
+
+```shell
+make load
+```
+
 ## Continuous Integration
 
 
